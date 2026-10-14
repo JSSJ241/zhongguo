@@ -628,6 +628,130 @@ textarea:focus { border-color: var(--red); }
   box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 }
 .switch.on::after { left: 23px; }
+
+   /* ====================================================
+   ПАНДА-ПИТОМЕЦ
+   ==================================================== */
+.pet-row {
+  display: flex; gap: 16px; align-items: flex-start;
+  cursor: pointer; user-select: none;
+}
+.pet-emoji {
+  font-size: 56px; line-height: 1;
+  animation: petFloat 3s ease-in-out infinite;
+}
+@keyframes petFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+.pet-info { flex: 1; }
+.pet-name {
+  font-weight: 700; color: var(--red);
+  font-size: 15px; margin-bottom: 4px;
+}
+.pet-phrase {
+  font-size: 13px; color: var(--gray);
+  margin-bottom: 10px; font-style: italic;
+}
+.pet-bars { display: flex; flex-direction: column; gap: 5px; margin-bottom: 8px; }
+.pet-bar { display: flex; align-items: center; gap: 6px; font-size: 12px; }
+.pet-bar-label { font-size: 14px; width: 18px; }
+.pet-bar-track {
+  flex: 1; height: 6px; background: var(--gray-light);
+  border-radius: 3px; overflow: hidden;
+}
+.pet-bar-fill {
+  height: 100%; border-radius: 3px;
+  transition: width 0.5s ease;
+}
+.pet-bar-fill.hunger { background: linear-gradient(90deg,#f59e0b,#ef4444); }
+.pet-bar-fill.joy { background: linear-gradient(90deg,#34d399,#10b981); }
+.pet-bar-num {
+  font-size: 11px; color: var(--gray);
+  width: 34px; text-align: right;
+}
+.pet-xp {
+  font-size: 11px; color: #a0aec0;
+  text-align: right; margin-top: 4px;
+}
+
+/* ====================================================
+   ДРАКОН
+   ==================================================== */
+.dragon-card {
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px; margin-bottom: 10px;
+  background: var(--card); border: 2px solid var(--gray-light);
+  border-radius: 14px; cursor: pointer;
+  transition: all 0.15s;
+}
+.dragon-card:active { transform: scale(0.98); }
+.dragon-card.won {
+  border-color: var(--green);
+  background: linear-gradient(135deg, rgba(47,158,92,0.08), transparent);
+}
+.dragon-card.locked {
+  opacity: 0.5; cursor: not-allowed;
+}
+.dragon-emoji { font-size: 36px; line-height: 1; }
+.dragon-info { flex: 1; }
+.dragon-name { font-weight: 700; color: var(--ink); font-size: 15px; }
+.dragon-meta { font-size: 12px; color: var(--gray); margin-top: 2px; }
+.dragon-badge {
+  font-size: 11px; font-weight: 700;
+  padding: 4px 10px; border-radius: 12px;
+  background: var(--red-soft-bad); color: var(--red-bad);
+}
+.dragon-card.won .dragon-badge {
+  background: var(--green-soft); color: var(--green);
+}
+.dragon-card.locked .dragon-badge {
+  background: var(--gray-light); color: var(--gray);
+}
+
+/* HP-бар боя */
+.battle-hp-row {
+  display: flex; justify-content: space-between;
+  font-size: 13px; font-weight: 600; color: var(--ink);
+}
+.battle-hp-track {
+  height: 10px; background: var(--gray-light);
+  border-radius: 5px; overflow: hidden; margin-top: 4px;
+}
+.battle-hp-fill {
+  height: 100%; border-radius: 5px;
+  transition: width 0.4s ease;
+}
+.battle-hp-fill.dragon {
+  background: linear-gradient(90deg, #dc2626, #991b1b);
+}
+.battle-hp-fill.you {
+  background: linear-gradient(90deg, #10b981, #047857);
+}
+.battle-q-counter {
+  text-align: center; font-size: 12px;
+  color: var(--gray); margin-top: 12px;
+}
+.dragon-word {
+  font-size: 72px; font-weight: 700;
+  color: var(--ink); line-height: 1.1;
+  margin-bottom: 8px;
+}
+.dragon-timer {
+  display: inline-block; margin-top: 12px;
+  padding: 4px 12px; border-radius: 20px;
+  background: var(--gray-light); color: var(--gray);
+  font-size: 13px; font-weight: 700;
+}
+.dragon-timer.urgent {
+  background: var(--red-soft-bad); color: var(--red-bad);
+  animation: pulse 0.8s infinite;
+}
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+   
 </style>
 </head>
 <body data-theme="classic">
@@ -665,6 +789,8 @@ textarea:focus { border-color: var(--red); }
       </div>
     </div>
 
+     <div class="panel" id="petCard"></div>
+     
     <div class="panel">
       <div class="panel-title">🎯 Что тренировать</div>
       <button class="btn btn-primary" onclick="Training.start()">
@@ -676,6 +802,10 @@ textarea:focus { border-color: var(--red); }
       <button class="btn btn-secondary" onclick="NewModes.showMenu()">
         🎵 Особые тренировки
       </button>
+       <button class="btn btn-gold" onclick="Dragon.renderHome(); App.go('screenDragonMenu')"
+        style="background:linear-gradient(135deg,#8b5cf6,#6d28d9); color:white;">
+  🐉 Игры
+</button>
     </div>
 
     <div class="panel">
@@ -910,6 +1040,47 @@ textarea:focus { border-color: var(--red); }
             onclick="NewModes.next()">Далее →</button>
   </div>
 
+   <!-- ЭКРАН: МЕНЮ ДРАКОНОВ -->
+<div class="screen" id="screenDragonMenu">
+  <div class="trainer-header">
+    <button class="btn btn-ghost" style="width:auto;"
+            onclick="App.go('screenHome'); Stats.refresh();">← Меню</button>
+    <span class="score">🐉 <span id="dragonWins">0</span></span>
+  </div>
+
+  <div class="logo">
+    <h1 style="font-size:30px; color:#8b5cf6;">龙之谷</h1>
+    <div class="sub" style="letter-spacing:2px;">Долина драконов</div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">⚔ Выбери противника</div>
+    <div id="dragonList"></div>
+  </div>
+</div>
+
+<!-- ЭКРАН: БИТВА -->
+<div class="screen" id="screenDragon">
+  <div class="trainer-header">
+    <button class="btn btn-ghost" style="width:auto;" onclick="Dragon.flee()">🏃 Побег</button>
+    <span class="score">⚔ <span id="dragonRound">1</span></span>
+  </div>
+
+  <div class="panel" id="dragonHeader"></div>
+
+  <div class="hanzi-card">
+    <div id="dragonMainWord"></div>
+    <div class="question-label" id="dragonQuestion">Что означает это слово?</div>
+    <div class="dragon-timer" id="dragonTimer"></div>
+  </div>
+
+  <div class="options" id="dragonOptions"></div>
+  <div class="feedback" id="dragonFeedback"></div>
+  <button class="btn btn-primary" id="dragonNextBtn"
+          style="display:none; margin-top:12px;"
+          onclick="Dragon.next()">⚔ Атаковать →</button>
+   </div>
+
   <!-- ================================================= -->
   <!-- ЭКРАН: НАСТРОЙКИ                                  -->
   <!-- ================================================= -->
@@ -1001,6 +1172,8 @@ textarea:focus { border-color: var(--red); }
 <script src="js/radicals.js"></script>
 <script src="js/training.js"></script>
 <script src="js/newmodes.js"></script>
+<script src="js/pet.js"></script>
+<script src="js/dragon.js"></script>   
 <script src="js/app.js"></script>
 </body>
 </html>

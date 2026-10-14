@@ -374,6 +374,9 @@
     if (window.Stats && typeof Stats.recordAnswer === 'function') {
       Stats.recordAnswer(ok);
     }
+     if (window.Pet && typeof Pet.feed === 'function') {
+        Pet.feed(ok);
+     }
 
     // Звук
     U.clickSound(ok ? 'ok' : 'err');

@@ -6,12 +6,10 @@
 <meta name="theme-color" content="#c73e3a">
 <title>汉语 HSK 1 · Тренажёр</title>
 <style>
-  /* ============ БАЗА ============ */
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
   :root {
     --red: #c73e3a;
     --red-dark: #a8302c;
-    --red-soft: #f4d5d3;
     --gold: #d4a24e;
     --ink: #1a1a1a;
     --gray: #6b7280;
@@ -33,8 +31,6 @@
     -webkit-font-smoothing: antialiased;
     line-height: 1.5;
   }
-
-  /* Декоративный фон с иероглифами */
   body::before {
     content: "汉语 学习 中国";
     position: fixed;
@@ -48,7 +44,6 @@
     z-index: 0;
     letter-spacing: 40px;
   }
-
   .wrap {
     position: relative;
     z-index: 1;
@@ -56,94 +51,50 @@
     margin: 0 auto;
     padding: 20px 20px 40px;
   }
-
-  /* ============ ЭКРАНЫ ============ */
   .screen { display: none; animation: fadeIn 0.3s ease; }
   .screen.active { display: block; }
   @keyframes fadeIn {
     from { opacity: 0; transform: translateY(6px); }
     to   { opacity: 1; transform: translateY(0); }
   }
-
-  /* ============ ШАПКА ============ */
-  .logo {
-    text-align: center;
-    margin-bottom: 24px;
-    padding-top: 8px;
-  }
+  .logo { text-align: center; margin-bottom: 24px; padding-top: 8px; }
   .logo h1 {
-    font-size: 34px;
-    font-weight: 800;
-    color: var(--red);
-    letter-spacing: 2px;
-    margin-bottom: 4px;
+    font-size: 34px; font-weight: 800; color: var(--red);
+    letter-spacing: 2px; margin-bottom: 4px;
     font-family: "PingFang SC", "Hiragino Sans GB", serif;
   }
   .logo .sub {
-    font-size: 13px;
-    color: var(--gray);
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    font-weight: 500;
+    font-size: 13px; color: var(--gray);
+    letter-spacing: 3px; text-transform: uppercase; font-weight: 500;
   }
   .logo .deco-line {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    margin-top: 12px;
-    color: var(--gold);
-    font-size: 14px;
+    display: flex; align-items: center; justify-content: center;
+    gap: 12px; margin-top: 12px; color: var(--gold); font-size: 14px;
   }
   .logo .deco-line::before,
   .logo .deco-line::after {
-    content: "";
-    height: 1px;
-    width: 50px;
+    content: ""; height: 1px; width: 50px;
     background: linear-gradient(to right, transparent, var(--gold), transparent);
   }
-
-  /* ============ КАРТОЧКИ / ПАНЕЛИ ============ */
   .panel {
-    background: var(--card);
-    border-radius: 20px;
-    padding: 22px;
+    background: var(--card); border-radius: 20px; padding: 22px;
     box-shadow: 0 2px 12px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.03);
     border: 1px solid rgba(199, 62, 58, 0.06);
     margin-bottom: 16px;
   }
   .panel-title {
-    font-size: 15px;
-    font-weight: 700;
-    color: var(--red);
-    margin-bottom: 12px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    letter-spacing: 0.5px;
+    font-size: 15px; font-weight: 700; color: var(--red);
+    margin-bottom: 12px; display: flex; align-items: center;
+    gap: 8px; letter-spacing: 0.5px;
   }
   .panel-title .count {
-    margin-left: auto;
-    font-size: 13px;
-    color: var(--gray);
-    font-weight: 500;
+    margin-left: auto; font-size: 13px; color: var(--gray); font-weight: 500;
   }
-
-  /* ============ КНОПКИ ============ */
   .btn {
-    width: 100%;
-    padding: 15px 20px;
-    border: none;
-    border-radius: 14px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    font-family: inherit;
-    transition: all 0.15s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
+    width: 100%; padding: 15px 20px; border: none; border-radius: 14px;
+    font-size: 16px; font-weight: 600; cursor: pointer; font-family: inherit;
+    transition: all 0.15s ease; display: flex; align-items: center;
+    justify-content: center; gap: 8px;
   }
   .btn:active { transform: scale(0.98); }
   .btn-primary {
@@ -151,469 +102,367 @@
     color: white;
     box-shadow: 0 4px 14px rgba(199, 62, 58, 0.25);
   }
-  .btn-primary:active {
-    box-shadow: 0 2px 6px rgba(199, 62, 58, 0.25);
-  }
-  .btn-secondary {
-    background: var(--gray-light);
-    color: var(--ink);
+  .btn-primary:active { box-shadow: 0 2px 6px rgba(199, 62, 58, 0.25); }
+  .btn-secondary { background: var(--gray-light); color: var(--ink); }
+  .btn-gold {
+    background: linear-gradient(135deg, var(--gold) 0%, #b8853a 100%);
+    color: white; box-shadow: 0 4px 14px rgba(212, 162, 78, 0.25);
   }
   .btn-ghost {
-    background: transparent;
-    color: var(--gray);
-    padding: 10px;
-    font-size: 14px;
+    background: transparent; color: var(--gray);
+    padding: 10px; font-size: 14px;
   }
   .btn + .btn { margin-top: 10px; }
   .btn:disabled { opacity: 0.5; cursor: not-allowed; }
-
-  /* ============ TEXTAREA ВВОДА СЛОВ ============ */
   .hint {
-    color: var(--gray);
-    font-size: 13px;
-    line-height: 1.6;
-    margin-bottom: 14px;
-    padding: 12px 14px;
+    color: var(--gray); font-size: 13px; line-height: 1.6;
+    margin-bottom: 14px; padding: 12px 14px;
     background: rgba(212, 162, 78, 0.06);
-    border-left: 3px solid var(--gold);
-    border-radius: 8px;
+    border-left: 3px solid var(--gold); border-radius: 8px;
   }
   .hint code {
-    background: rgba(0,0,0,0.06);
-    padding: 1px 6px;
-    border-radius: 4px;
-    font-size: 12px;
-    color: var(--red-dark);
+    background: rgba(0,0,0,0.06); padding: 1px 6px;
+    border-radius: 4px; font-size: 12px; color: var(--red-dark);
   }
   textarea {
-    width: 100%;
-    height: 160px;
-    padding: 14px;
-    border: 2px solid var(--gray-light);
-    border-radius: 12px;
-    font-size: 14px;
-    font-family: "SF Mono", Menlo, Consolas, monospace;
-    resize: vertical;
-    outline: none;
-    transition: border-color 0.15s ease;
-    line-height: 1.7;
-    color: var(--ink);
+    width: 100%; height: 120px; padding: 14px;
+    border: 2px solid var(--gray-light); border-radius: 12px;
+    font-size: 14px; font-family: "SF Mono", Menlo, Consolas, monospace;
+    resize: vertical; outline: none; transition: border-color 0.15s ease;
+    line-height: 1.7; color: var(--ink);
   }
-  textarea:focus {
-    border-color: var(--red);
-    background: rgba(199, 62, 58, 0.015);
-  }
-
-  /* ============ СПИСОК СЛОВ ============ */
-  .word-list {
-    max-height: 300px;
-    overflow-y: auto;
-    margin-top: 4px;
-    border-radius: 12px;
-  }
+  textarea:focus { border-color: var(--red); background: rgba(199, 62, 58, 0.015); }
+  .word-list { max-height: 300px; overflow-y: auto; margin-top: 4px; border-radius: 12px; }
   .word-list::-webkit-scrollbar { width: 6px; }
-  .word-list::-webkit-scrollbar-thumb {
-    background: var(--gray-light);
-    border-radius: 3px;
-  }
+  .word-list::-webkit-scrollbar-thumb { background: var(--gray-light); border-radius: 3px; }
   .word-row {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 10px 4px;
-    border-bottom: 1px solid rgba(0,0,0,0.04);
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 4px; border-bottom: 1px solid rgba(0,0,0,0.04);
     font-size: 14px;
   }
   .word-row:last-child { border-bottom: none; }
   .word-hz {
-    font-size: 22px;
-    font-weight: 600;
-    min-width: 66px;
-    color: var(--ink);
+    font-size: 22px; font-weight: 600; min-width: 66px; color: var(--ink);
     font-family: "PingFang SC", "Hiragino Sans GB", serif;
   }
-  .word-py {
-    color: var(--red);
-    font-size: 13px;
-    min-width: 78px;
-    font-weight: 500;
-  }
+  .word-py { color: var(--red); font-size: 13px; min-width: 78px; font-weight: 500; }
   .word-ru {
-    color: var(--gray);
-    flex: 1;
-    font-size: 13px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    color: var(--gray); flex: 1; font-size: 13px;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
   }
   .word-del {
-    color: #cbd5e0;
-    cursor: pointer;
-    padding: 4px 8px;
-    font-size: 18px;
-    line-height: 1;
-    border-radius: 6px;
-    transition: all 0.15s;
+    color: #cbd5e0; cursor: pointer; padding: 4px 8px;
+    font-size: 18px; line-height: 1; border-radius: 6px; transition: all 0.15s;
   }
   .word-del:hover, .word-del:active {
-    color: var(--red-bad);
-    background: var(--red-soft-bad);
+    color: var(--red-bad); background: var(--red-soft-bad);
   }
   .empty {
-    color: #a0aec0;
-    text-align: center;
-    padding: 30px 20px;
-    font-size: 14px;
-    line-height: 1.6;
+    color: #a0aec0; text-align: center; padding: 30px 20px;
+    font-size: 14px; line-height: 1.6;
   }
-
-  /* ============ ПРОГРЕСС ============ */
   .progress-bar {
-    height: 4px;
-    background: var(--gray-light);
-    border-radius: 2px;
-    overflow: hidden;
-    margin-bottom: 16px;
+    height: 4px; background: var(--gray-light);
+    border-radius: 2px; overflow: hidden; margin-bottom: 16px;
   }
   .progress-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--red) 0%, var(--gold) 100%);
-    border-radius: 2px;
-    transition: width 0.4s ease;
+    height: 100%; background: linear-gradient(90deg, var(--red) 0%, var(--gold) 100%);
+    border-radius: 2px; transition: width 0.4s ease;
   }
-
-  /* ============ ШАПКА ТРЕНАЖЁРА ============ */
   .trainer-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 14px;
-    font-size: 14px;
-    color: var(--gray);
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 14px; font-size: 14px; color: var(--gray);
   }
   .trainer-header .score {
-    font-weight: 700;
-    color: var(--green);
-    background: var(--green-soft);
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 13px;
+    font-weight: 700; color: var(--green); background: var(--green-soft);
+    padding: 4px 12px; border-radius: 20px; font-size: 13px;
   }
-
-  /* ============ ЧЕКБОКСЫ РЕЖИМА ============ */
   .modes {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 14px;
-    background: var(--card);
-    padding: 8px;
-    border-radius: 14px;
+    display: flex; gap: 8px; margin-bottom: 14px;
+    background: var(--card); padding: 8px; border-radius: 14px;
     border: 1px solid rgba(0,0,0,0.05);
   }
   .mode-chip {
-    flex: 1;
-    padding: 10px 4px;
-    border-radius: 10px;
-    text-align: center;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.15s;
-    color: var(--gray);
-    user-select: none;
+    flex: 1; padding: 10px 4px; border-radius: 10px;
+    text-align: center; font-size: 12px; font-weight: 600;
+    cursor: pointer; transition: all 0.15s; color: var(--gray);
+    user-select: none; white-space: nowrap;
   }
   .mode-chip.on {
     background: linear-gradient(135deg, var(--red) 0%, var(--red-dark) 100%);
-    color: white;
-    box-shadow: 0 2px 8px rgba(199, 62, 58, 0.2);
+    color: white; box-shadow: 0 2px 8px rgba(199, 62, 58, 0.2);
   }
   .mode-chip input { display: none; }
-
-  /* ============ КАРТОЧКА СЛОВА ============ */
   .hanzi-card {
-    background: var(--card);
-    border-radius: 24px;
-    padding: 44px 24px;
+    background: var(--card); border-radius: 24px; padding: 44px 24px;
     text-align: center;
     box-shadow: 0 4px 24px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04);
     border: 1px solid rgba(199, 62, 58, 0.06);
-    margin-bottom: 20px;
-    position: relative;
-    overflow: hidden;
+    margin-bottom: 20px; position: relative; overflow: hidden;
   }
   .hanzi-card::before {
-    content: "";
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, var(--red), var(--gold), var(--red));
+    content: ""; position: absolute; top: 0; left: 0; right: 0;
+    height: 3px; background: linear-gradient(90deg, var(--red), var(--gold), var(--red));
     opacity: 0.6;
   }
   .hanzi-main {
-    font-size: 96px;
-    font-weight: 700;
-    line-height: 1.05;
-    color: var(--ink);
+    font-size: 96px; font-weight: 700; line-height: 1.05; color: var(--ink);
     font-family: "PingFang SC", "Hiragino Sans GB", "STHeiti", serif;
-    letter-spacing: 4px;
-    transition: font-size 0.2s;
-    word-break: break-word;
+    letter-spacing: 4px; transition: font-size 0.2s; word-break: break-word;
   }
   .hanzi-main.small {
-    font-size: 40px;
-    font-family: inherit;
-    letter-spacing: 0;
-    font-weight: 600;
-    line-height: 1.3;
-    color: var(--red-dark);
+    font-size: 40px; font-family: inherit; letter-spacing: 0;
+    font-weight: 600; line-height: 1.3; color: var(--red-dark);
   }
   .badge {
-    display: inline-block;
-    margin-top: 14px;
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.4px;
-    background: rgba(212, 162, 78, 0.15);
+    display: inline-block; margin-top: 14px; padding: 4px 12px;
+    border-radius: 20px; font-size: 11px; font-weight: 600;
+    letter-spacing: 0.4px; background: rgba(212, 162, 78, 0.15);
     color: #8a6420;
   }
-  .badge.new {
-    background: rgba(199, 62, 58, 0.12);
-    color: var(--red-dark);
-  }
-
+  .badge.new { background: rgba(199, 62, 58, 0.12); color: var(--red-dark); }
   .play-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    margin-top: 16px;
-    padding: 10px 18px;
-    border: none;
-    border-radius: 12px;
-    background: rgba(199, 62, 58, 0.08);
-    color: var(--red);
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    font-family: inherit;
-    transition: all 0.15s;
+    display: inline-flex; align-items: center; justify-content: center;
+    gap: 6px; margin-top: 16px; padding: 10px 18px;
+    border: none; border-radius: 12px;
+    background: rgba(199, 62, 58, 0.08); color: var(--red);
+    font-size: 14px; font-weight: 600; cursor: pointer;
+    font-family: inherit; transition: all 0.15s;
   }
-  .play-btn:active {
-    background: rgba(199, 62, 58, 0.15);
-    transform: scale(0.96);
-  }
-
-  /* ============ ВОПРОС ============ */
+  .play-btn:active { background: rgba(199, 62, 58, 0.15); transform: scale(0.96); }
   .question-label {
-    text-align: center;
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    color: var(--gray);
-    margin-bottom: 14px;
-    font-weight: 600;
+    text-align: center; font-size: 12px; text-transform: uppercase;
+    letter-spacing: 2px; color: var(--gray); margin-bottom: 14px; font-weight: 600;
   }
-
-  /* ============ ВАРИАНТЫ ============ */
-  .options {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 14px;
-  }
+  .options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
   .option {
-    background: var(--card);
-    border: 2px solid var(--gray-light);
-    border-radius: 14px;
-    padding: 16px 20px;
-    font-size: 17px;
-    text-align: center;
-    cursor: pointer;
-    font-weight: 500;
-    color: var(--ink);
-    transition: all 0.15s;
-    font-family: inherit;
+    background: var(--card); border: 2px solid var(--gray-light);
+    border-radius: 14px; padding: 16px 20px; font-size: 17px;
+    text-align: center; cursor: pointer; font-weight: 500;
+    color: var(--ink); transition: all 0.15s; font-family: inherit;
   }
   .option:active { transform: scale(0.98); }
   .option.hanzi-opt {
-    font-size: 28px;
-    font-weight: 600;
+    font-size: 28px; font-weight: 600;
     font-family: "PingFang SC", "Hiragino Sans GB", serif;
     letter-spacing: 2px;
   }
   .option.correct {
-    background: var(--green-soft);
-    border-color: var(--green);
-    color: #14532d;
+    background: var(--green-soft); border-color: var(--green); color: #14532d;
   }
   .option.wrong {
-    background: var(--red-soft-bad);
-    border-color: var(--red-bad);
-    color: #7f1d1d;
+    background: var(--red-soft-bad); border-color: var(--red-bad); color: #7f1d1d;
   }
   .option.disabled { pointer-events: none; opacity: 0.9; }
-
-  /* ============ ПОЛЕ ВВОДА ============ */
   .answer-input {
-    width: 100%;
-    padding: 18px;
-    border: 2px solid var(--gray-light);
-    border-radius: 14px;
-    font-size: 20px;
-    text-align: center;
-    outline: none;
-    font-family: inherit;
-    transition: all 0.15s;
-    color: var(--ink);
-    background: var(--card);
+    width: 100%; padding: 18px; border: 2px solid var(--gray-light);
+    border-radius: 14px; font-size: 20px; text-align: center;
+    outline: none; font-family: inherit; transition: all 0.15s;
+    color: var(--ink); background: var(--card);
   }
   .answer-input:focus {
-    border-color: var(--red);
-    box-shadow: 0 0 0 4px rgba(199, 62, 58, 0.08);
+    border-color: var(--red); box-shadow: 0 0 0 4px rgba(199, 62, 58, 0.08);
   }
   .answer-input.hanzi-inp {
-    font-size: 32px;
-    font-family: "PingFang SC", "Hiragino Sans GB", serif;
+    font-size: 32px; font-family: "PingFang SC", "Hiragino Sans GB", serif;
     letter-spacing: 2px;
   }
   .answer-input.correct {
-    border-color: var(--green);
-    background: var(--green-soft);
-    color: #14532d;
+    border-color: var(--green); background: var(--green-soft); color: #14532d;
   }
   .answer-input.wrong {
-    border-color: var(--red-bad);
-    background: var(--red-soft-bad);
-    color: #7f1d1d;
+    border-color: var(--red-bad); background: var(--red-soft-bad); color: #7f1d1d;
   }
   .answer-input:disabled { opacity: 1; }
   .input-tip {
-    text-align: center;
-    color: #a0aec0;
-    font-size: 12px;
-    margin-top: 8px;
-    font-style: italic;
+    text-align: center; color: #a0aec0; font-size: 12px;
+    margin-top: 8px; font-style: italic;
   }
-
-  /* ============ ТОНАЛЬНАЯ КЛАВИАТУРА ============ */
   .tone-bar {
-    display: none;
-    flex-wrap: wrap;
-    gap: 5px;
-    margin-top: 10px;
+    display: none; flex-wrap: wrap; gap: 5px; margin-top: 10px;
     justify-content: center;
   }
   .tone-bar.show { display: flex; }
   .tone-bar button {
-    padding: 8px 11px;
-    border: 1px solid var(--gray-light);
-    background: var(--card);
-    border-radius: 8px;
-    font-size: 17px;
-    cursor: pointer;
-    min-width: 40px;
-    font-family: inherit;
-    transition: all 0.1s;
-    color: var(--ink);
+    padding: 8px 11px; border: 1px solid var(--gray-light);
+    background: var(--card); border-radius: 8px; font-size: 17px;
+    cursor: pointer; min-width: 40px; font-family: inherit;
+    transition: all 0.1s; color: var(--ink);
   }
   .tone-bar button:active {
-    background: var(--red);
-    color: white;
-    border-color: var(--red);
-    transform: scale(0.94);
+    background: var(--red); color: white;
+    border-color: var(--red); transform: scale(0.94);
   }
-
-  /* ============ ФИДБЕК ============ */
   .feedback {
-    text-align: center;
-    font-size: 15px;
-    font-weight: 600;
-    padding: 14px 16px;
-    border-radius: 14px;
-    margin-top: 12px;
-    opacity: 0;
-    transition: opacity 0.25s;
-    line-height: 1.4;
+    text-align: center; font-size: 15px; font-weight: 600;
+    padding: 14px 16px; border-radius: 14px; margin-top: 12px;
+    opacity: 0; transition: opacity 0.25s; line-height: 1.4;
   }
   .feedback.show { opacity: 1; }
-  .feedback.ok {
-    background: var(--green-soft);
-    color: #14532d;
-  }
-  .feedback.err {
-    background: var(--red-soft-bad);
-    color: #7f1d1d;
-  }
+  .feedback.ok { background: var(--green-soft); color: #14532d; }
+  .feedback.err { background: var(--red-soft-bad); color: #7f1d1d; }
   .feedback .answer-reveal {
-    display: block;
-    font-size: 13px;
-    font-weight: 500;
-    margin-top: 6px;
-    opacity: 0.85;
+    display: block; font-size: 13px; font-weight: 500;
+    margin-top: 6px; opacity: 0.85;
   }
   .feedback .answer-reveal b {
-    font-family: "PingFang SC", "Hiragino Sans GB", serif;
-    font-size: 16px;
+    font-family: "PingFang SC", "Hiragino Sans GB", serif; font-size: 16px;
   }
-
-  /* ============ ФИНАЛ РАУНДА ============ */
   .finish {
-    text-align: center;
-    padding: 40px 20px;
-    animation: fadeIn 0.4s ease;
+    text-align: center; padding: 40px 20px; animation: fadeIn 0.4s ease;
   }
-  .finish .emoji {
-    font-size: 72px;
-    margin-bottom: 20px;
-    display: block;
-  }
+  .finish .emoji { font-size: 72px; margin-bottom: 20px; display: block; }
   .finish h2 {
-    font-size: 26px;
-    color: var(--red);
-    margin-bottom: 24px;
-    font-weight: 800;
-    letter-spacing: 0.5px;
+    font-size: 26px; color: var(--red); margin-bottom: 24px;
+    font-weight: 800; letter-spacing: 0.5px;
   }
   .finish .big-score {
-    font-size: 56px;
-    font-weight: 800;
+    font-size: 56px; font-weight: 800;
     background: linear-gradient(135deg, var(--red), var(--gold));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    line-height: 1;
-    margin-bottom: 8px;
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text; line-height: 1; margin-bottom: 8px;
   }
-  .finish .percent {
-    color: var(--gray);
-    font-size: 15px;
-    margin-bottom: 32px;
-  }
-
-  /* ============ ТОСТ ============ */
+  .finish .percent { color: var(--gray); font-size: 15px; margin-bottom: 32px; }
   .toast {
-    position: fixed;
-    bottom: 30px;
-    left: 50%;
+    position: fixed; bottom: 30px; left: 50%;
     transform: translateX(-50%) translateY(100px);
-    background: var(--ink);
-    color: white;
-    padding: 12px 22px;
-    border-radius: 12px;
-    font-size: 14px;
-    font-weight: 500;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
-    z-index: 100;
+    background: var(--ink); color: white; padding: 12px 22px;
+    border-radius: 12px; font-size: 14px; font-weight: 500;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2); z-index: 100;
     opacity: 0;
     transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
-    max-width: 90vw;
-    text-align: center;
+    max-width: 90vw; text-align: center;
   }
-  .toast.show {
-    transform: translateX(-50%) translateY(0);
-    opacity: 1;
+  .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+  /* ============ КЛЮЧИ (радикалы) ============ */
+  .radical-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
+    gap: 10px;
+    margin-top: 8px;
+  }
+  .radical-card {
+    background: var(--card);
+    border: 1.5px solid var(--gray-light);
+    border-radius: 14px;
+    padding: 14px 6px 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.15s;
+    user-select: none;
+    position: relative;
+  }
+  .radical-card:active { transform: scale(0.96); }
+  .radical-card.mastered {
+    border-color: var(--green);
+    background: var(--green-soft);
+  }
+  .radical-card.mastered::after {
+    content: "✓";
+    position: absolute;
+    top: 4px; right: 6px;
+    color: var(--green);
+    font-weight: 700;
+    font-size: 12px;
+  }
+  .radical-glyph {
+    font-size: 40px;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--red);
+    font-family: "PingFang SC", "Hiragino Sans GB", serif;
+    margin-bottom: 6px;
+  }
+  .radical-name {
+    font-size: 11px;
+    color: var(--gray);
+    font-weight: 500;
+    line-height: 1.3;
+  }
+  .radical-progress {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 13px;
+    color: var(--gray);
+    margin-bottom: 14px;
+  }
+  .radical-progress b { color: var(--red); }
+  .radical-detail {
+    background: var(--card);
+    border-radius: 20px;
+    padding: 30px 24px;
+    text-align: center;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+    border: 1px solid rgba(199, 62, 58, 0.06);
+    margin-bottom: 20px;
+  }
+  .radical-detail .glyph-big {
+    font-size: 140px;
+    line-height: 1;
+    color: var(--red);
+    font-family: "PingFang SC", "Hiragino Sans GB", serif;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .radical-detail .name-big {
+    font-size: 22px;
+    color: var(--ink);
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .radical-detail .mean {
+    color: var(--gray);
+    font-size: 15px;
+    margin-bottom: 20px;
+  }
+  .radical-detail .examples {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    padding-top: 16px;
+    border-top: 1px solid var(--gray-light);
+  }
+  .radical-detail .ex {
+    font-size: 24px;
+    color: var(--ink);
+    font-family: "PingFang SC", "Hiragino Sans GB", serif;
+    font-weight: 600;
+  }
+  .radical-detail .ex small {
+    display: block;
+    font-size: 12px;
+    color: var(--gray);
+    font-weight: 400;
+    font-family: inherit;
+    margin-top: 2px;
+  }
+  .tabs {
+    display: flex;
+    gap: 4px;
+    background: var(--gray-light);
+    padding: 4px;
+    border-radius: 14px;
+    margin-bottom: 16px;
+  }
+  .tab {
+    flex: 1;
+    padding: 11px 8px;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--gray);
+    cursor: pointer;
+    transition: all 0.15s;
+    user-select: none;
+  }
+  .tab.active {
+    background: var(--card);
+    color: var(--red);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
   }
 </style>
 </head>
@@ -621,59 +470,83 @@
 
 <div class="wrap">
 
-  <!-- ===================================================== -->
-  <!-- ЭКРАН 1: МОИ СЛОВА                                    -->
-  <!-- ===================================================== -->
-  <div class="screen active" id="screenInput">
+  <!-- ========================================================== -->
+  <!-- ЭКРАН 1: ГЛАВНОЕ МЕНЮ                                     -->
+  <!-- ========================================================== -->
+  <div class="screen active" id="screenHome">
     <div class="logo">
       <h1>汉语</h1>
-      <div class="sub">HSK 1 · 我的词汇</div>
+      <div class="sub">HSK 1 · 我的学习</div>
       <div class="deco-line">✦</div>
     </div>
 
     <div class="panel">
       <div class="panel-title">
-        📝 Добавить слова
-        <span class="count" id="totalCount">0 / 150</span>
+        📚 Моя база
+        <span class="count" id="homeStats"></span>
       </div>
+      <button class="btn btn-primary" onclick="startTraining()">
+        ▶ Тренировать слова
+      </button>
+      <button class="btn btn-gold" onclick="showScreen('screenRadicals'); renderRadicals();">
+        🀄 Тренировать ключи
+      </button>
+      <button class="btn btn-secondary" onclick="showScreen('screenWords'); renderWordList();">
+        📝 Мои слова
+      </button>
+    </div>
 
+    <div class="panel" id="todayPanel" style="display:none;">
+      <div class="panel-title">🌅 Сегодня</div>
+      <div id="todayContent" style="font-size:14px; color:var(--gray); line-height:1.8;"></div>
+    </div>
+  </div>
+
+  <!-- ========================================================== -->
+  <!-- ЭКРАН 2: МОИ СЛОВА                                        -->
+  <!-- ========================================================== -->
+  <div class="screen" id="screenWords">
+    <div class="logo">
+      <h1 style="font-size:26px;">我的词汇</h1>
+      <div class="sub" style="letter-spacing:2px;">Мои слова</div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">
+        📝 Добавить слова
+        <span class="count" id="wordsCount"></span>
+      </div>
       <div class="hint">
         Каждая строка — одно слово:<br>
-        <code>иероглиф | пиньинь | перевод</code><br>
-        Несколько значений — через слэш: <code>хороший / хорошо</code>
+        <code>иероглиф | пиньинь | перевод</code>
       </div>
-
       <textarea id="inputArea" placeholder="你好 | nǐ hǎo | привет
-谢谢 | xiè xie | спасибо
-苹果 | píng guǒ | яблоко"></textarea>
-
+谢谢 | xiè xie | спасибо"></textarea>
       <button class="btn btn-primary" onclick="addWords()" style="margin-top:14px;">
         ➕ Добавить
-      </button>
-      <button class="btn btn-secondary" onclick="loadHsk1()">
-        📚 Загрузить все 150 слов HSK 1
-      </button>
-      <button class="btn btn-primary" onclick="startTraining()" style="margin-top:14px;">
-        ▶ Начать тренировку
       </button>
     </div>
 
     <div class="panel">
       <div class="panel-title">
-        📖 Мои слова
-        <span class="count" id="wordsCount"></span>
+        📖 Список
+        <span class="count" id="listCount"></span>
       </div>
       <div class="word-list" id="wordList"></div>
     </div>
+
+    <button class="btn btn-secondary" onclick="showScreen('screenHome'); updateHome();">
+      ← Назад
+    </button>
   </div>
 
-  <!-- ===================================================== -->
-  <!-- ЭКРАН 2: ТРЕНАЖЁР                                     -->
-  <!-- ===================================================== -->
+  <!-- ========================================================== -->
+  <!-- ЭКРАН 3: ТРЕНАЖЁР СЛОВ                                    -->
+  <!-- ========================================================== -->
   <div class="screen" id="screenTrainer">
     <div class="trainer-header">
       <button class="btn btn-ghost" style="width:auto;"
-              onclick="backToWords()">← Слова</button>
+              onclick="backToHome()">← Меню</button>
       <span class="score">✓ <span id="score">0</span></span>
     </div>
 
@@ -683,22 +556,22 @@
 
     <div class="modes">
       <label class="mode-chip on" id="chipRu">
-        <input type="checkbox" id="mRu" checked> 🇷🇺 Перевод
+        <input type="checkbox" id="mRu" checked onchange="toggleChip(this)"> 🇷🇺 RU
       </label>
       <label class="mode-chip on" id="chipPy">
-        <input type="checkbox" id="mPinyin" checked> Pinyin
+        <input type="checkbox" id="mPinyin" checked onchange="toggleChip(this)"> Pinyin
       </label>
       <label class="mode-chip on" id="chipHz">
-        <input type="checkbox" id="mHanzi" checked> 汉字
+        <input type="checkbox" id="mHanzi" checked onchange="toggleChip(this)"> 汉字
       </label>
     </div>
 
     <div class="modes" style="margin-top:-6px;">
       <label class="mode-chip on" id="chipInput">
-        <input type="checkbox" id="mInput" checked> ⌨ Ввод
+        <input type="checkbox" id="mInput" checked onchange="toggleChip(this)"> ⌨ Ввод
       </label>
       <label class="mode-chip on" id="chipSpeak">
-        <input type="checkbox" id="mSpeak" checked> 🔊 Озвучка
+        <input type="checkbox" id="mSpeak" checked onchange="toggleChip(this)"> 🔊 Озвучка
       </label>
     </div>
 
@@ -709,15 +582,63 @@
     </div>
 
     <div class="question-label" id="questionLabel">Напиши перевод</div>
-
     <div class="options" id="options"></div>
-
     <div class="tone-bar" id="toneBar"></div>
-
     <div class="feedback" id="feedback"></div>
-
     <button class="btn btn-primary" id="nextBtn" style="display:none; margin-top:12px;"
             onclick="nextQuestion()">Далее →</button>
+  </div>
+
+  <!-- ========================================================== -->
+  <!-- ЭКРАН 4: СПИСОК КЛЮЧЕЙ                                    -->
+  <!-- ========================================================== -->
+  <div class="screen" id="screenRadicals">
+    <div class="trainer-header">
+      <button class="btn btn-ghost" style="width:auto;"
+              onclick="showScreen('screenHome'); updateHome();">← Меню</button>
+      <span class="score" id="radicalScore">0 / 50</span>
+    </div>
+
+    <div class="panel" style="padding:16px 18px;">
+      <div class="panel-title" style="margin-bottom:8px;">🀄 Ключи (радикалы)</div>
+      <div class="radical-progress">
+        <span>Изучено: <b id="masteredCount">0</b> / 50</span>
+        <span>Тапни для тренировки</span>
+      </div>
+      <button class="btn btn-gold" onclick="startRadicalTraining()">
+        ▶ Тренировать все
+      </button>
+    </div>
+
+    <div class="radical-grid" id="radicalGrid"></div>
+  </div>
+
+  <!-- ========================================================== -->
+  <!-- ЭКРАН 5: ТРЕНАЖЁР КЛЮЧЕЙ                                  -->
+  <!-- ========================================================== -->
+  <div class="screen" id="screenRadicalTrainer">
+    <div class="trainer-header">
+      <button class="btn btn-ghost" style="width:auto;"
+              onclick="backToRadicals()">← Ключи</button>
+      <span class="score">✓ <span id="rScore">0</span></span>
+    </div>
+
+    <div class="progress-bar">
+      <div class="progress-fill" id="rProgressFill" style="width:0%"></div>
+    </div>
+
+    <div class="radical-detail">
+      <div class="glyph-big" id="rGlyph">氵</div>
+      <div class="name-big" id="rName">Три капли воды</div>
+      <div class="mean" id="rMean">связан с водой</div>
+      <div class="examples" id="rExamples"></div>
+    </div>
+
+    <div class="question-label" id="rQuestion">Что это за ключ?</div>
+    <div class="options" id="rOptions"></div>
+    <div class="feedback" id="rFeedback"></div>
+    <button class="btn btn-primary" id="rNextBtn" style="display:none; margin-top:12px;"
+            onclick="nextRadicalQuestion()">Далее →</button>
   </div>
 
 </div>
@@ -726,194 +647,843 @@
 
 <script>
 /* =================================================================
-   1. ХРАНИЛИЩЕ И ГЛОБАЛЬНЫЕ НАСТРОЙКИ
+   1. ГЛОБАЛЬНЫЕ НАСТРОЙКИ
    ================================================================= */
-const STORAGE_KEY = 'hsk1_trainer_v1';
+const STORAGE_KEY = 'hsk1_trainer_v2';
+const RADICAL_KEY = 'hsk1_radicals_v1';
 const QUESTIONS_PER_ROUND = 10;
 const OPTIONS_COUNT = 4;
-const INPUT_RATIO = 0.5;   // половина вопросов — ввод, половина — выбор
-
+const INPUT_RATIO = 0.5;
 const WEIGHT = { today: 5, yesterday: 3, week: 2, old: 1 };
 
 let words = [];
 let speakEnabled = true;
+
+/* =================================================================
+   2. 150 СЛОВ HSK 1
+   ================================================================= */
+const HSK1_WORDS = [
+  ["爱","ài","любить"],["八","bā","восемь"],["爸爸","bàba","папа"],
+  ["杯子","bēizi","стакан / чашка"],["北京","Běijīng","Пекин"],
+  ["本","běn","счётное слово для книг"],["不客气","bú kèqi","пожалуйста / не за что"],
+  ["不","bù","не"],["菜","cài","блюдо / овощи"],["茶","chá","чай"],
+  ["吃","chī","есть / кушать"],["出租车","chūzūchē","такси"],
+  ["打电话","dǎ diànhuà","звонить по телефону"],["大","dà","большой"],
+  ["的","de","притяжательная частица"],["点","diǎn","час / точка"],
+  ["电脑","diànnǎo","компьютер"],["电视","diànshì","телевизор"],
+  ["电影","diànyǐng","кино"],["东西","dōngxi","вещь"],["都","dōu","все"],
+  ["读","dú","читать"],["对不起","duìbuqǐ","извините"],["多","duō","много"],
+  ["多少","duōshao","сколько"],["儿子","érzi","сын"],["二","èr","два"],
+  ["饭店","fàndiàn","ресторан"],["飞机","fēijī","самолёт"],
+  ["分钟","fēnzhōng","минута"],["高兴","gāoxìng","радостный"],
+  ["个","gè","счётное слово"],["工作","gōngzuò","работать / работа"],
+  ["狗","gǒu","собака"],["汉语","Hànyǔ","китайский язык"],["好","hǎo","хороший"],
+  ["喝","hē","пить"],["和","hé","и / с"],["很","hěn","очень"],
+  ["后面","hòumiàn","сзади"],["回","huí","возвращаться"],["会","huì","уметь / мочь"],
+  ["火车站","huǒchēzhàn","вокзал"],["几","jǐ","сколько"],["家","jiā","дом / семья"],
+  ["叫","jiào","звать"],["今天","jīntiān","сегодня"],["九","jiǔ","девять"],
+  ["开","kāi","открывать"],["看","kàn","смотреть"],["看见","kànjiàn","увидеть"],
+  ["块","kuài","юань / кусок"],["来","lái","приходить"],["老师","lǎoshī","учитель"],
+  ["了","le","частица завершённости"],["冷","lěng","холодный"],["里","lǐ","внутри"],
+  ["六","liù","шесть"],["吗","ma","вопросительная частица"],["妈妈","māma","мама"],
+  ["买","mǎi","покупать"],["猫","māo","кошка"],["没关系","méi guānxi","ничего страшного"],
+  ["没有","méiyǒu","не иметь / нет"],["米饭","mǐfàn","рис"],["名字","míngzi","имя"],
+  ["明天","míngtiān","завтра"],["哪儿","nǎr","где"],["那","nà","тот"],
+  ["呢","ne","частица"],["能","néng","мочь"],["你","nǐ","ты"],["年","nián","год"],
+  ["女儿","nǚ'ér","дочь"],["朋友","péngyou","друг"],["漂亮","piàoliang","красивый"],
+  ["苹果","píngguǒ","яблоко"],["七","qī","семь"],["钱","qián","деньги"],
+  ["前面","qiánmiàn","впереди"],["请","qǐng","пожалуйста (просьба)"],["去","qù","идти"],
+  ["热","rè","жаркий"],["人","rén","человек"],["认识","rènshi","знать (кого-то)"],
+  ["三","sān","три"],["商店","shāngdiàn","магазин"],["上","shàng","верх / на"],
+  ["上午","shàngwǔ","утро"],["少","shǎo","мало"],["谁","shéi","кто"],
+  ["什么","shénme","что"],["十","shí","десять"],["时候","shíhou","время"],
+  ["是","shì","быть"],["书","shū","книга"],["水","shuǐ","вода"],
+  ["水果","shuǐguǒ","фрукты"],["睡觉","shuìjiào","спать"],["说","shuō","говорить"],
+  ["说话","shuōhuà","разговаривать"],["四","sì","четыре"],["岁","suì","лет (возраст)"],
+  ["他","tā","он"],["她","tā","она"],["太","tài","слишком"],
+  ["天气","tiānqì","погода"],["听","tīng","слушать"],["同学","tóngxué","однокурсник"],
+  ["喂","wéi","алло"],["我","wǒ","я"],["我们","wǒmen","мы"],["五","wǔ","пять"],
+  ["喜欢","xǐhuan","нравиться"],["下","xià","низ / под"],["下午","xiàwǔ","после полудня"],
+  ["下雨","xiàyǔ","идёт дождь"],["先生","xiānsheng","господин"],["现在","xiànzài","сейчас"],
+  ["想","xiǎng","хотеть / думать"],["小","xiǎo","маленький"],
+  ["小姐","xiǎojiě","госпожа / мисс"],["些","xiē","немного"],
+  ["写","xiě","писать"],["谢谢","xièxie","спасибо"],["星期","xīngqī","неделя"],
+  ["学生","xuésheng","студент"],["学习","xuéxí","учиться"],["学校","xuéxiào","школа"],
+  ["一","yī","один"],["衣服","yīfu","одежда"],["医生","yīshēng","врач"],
+  ["医院","yīyuàn","больница"],["椅子","yǐzi","стул"],["有","yǒu","иметь"],
+  ["月","yuè","месяц"],["再见","zàijiàn","до свидания"],["在","zài","в / находиться"],
+  ["怎么","zěnme","как"],["怎么样","zěnmeyàng","как дела"],["这","zhè","этот"],
+  ["中国","Zhōngguó","Китай"],["中午","zhōngwǔ","полдень"],["住","zhù","жить"],
+  ["桌子","zhuōzi","стол"],["字","zì","иероглиф"],["昨天","zuótiān","вчера"],
+  ["坐","zuò","сидеть"],["做","zuò","делать"]
+];
+
+/* =================================================================
+   3. 50 БАЗОВЫХ КЛЮЧЕЙ (радикалов)
+   ================================================================= */
+const RADICALS = [
+  { g:"一", n:"一 héng", m:"один / горизонтальная черта", ex:["一","二","三"] },
+  { g:"丨", n:"丨 gǔn", m:"вертикальная черта", ex:["中","个"] },
+  { g:"丶", n:"丶 diǎn", m:"точка", ex:["义","丸"] },
+  { g:"丿", n:"丿 piě", m:"откидная влево", ex:["人","月"] },
+  { g:"乙", n:"乙 yǐ", m:"второй / изогнутая", ex:["九","也"] },
+  { g:"二", n:"二 èr", m:"два", ex:["五","云"] },
+  { g:"十", n:"十 shí", m:"десять", ex:["千","古"] },
+  { g:"人", n:"人 rén", m:"человек", ex:["从","你"] },
+  { g:"儿", n:"儿 ér", m:"ребёнок / ноги", ex:["元","先"] },
+  { g:"八", n:"八 bā", m:"восемь", ex:["六","共"] },
+  { g:"冂", n:"冂 jiōng", m:"пустая рамка", ex:["同","内"] },
+  { g:"几", n:"几 jī", m:"столик", ex:["凡","风"] },
+  { g:"刀", n:"刀 dāo", m:"нож", ex:["分","切"] },
+  { g:"力", n:"力 lì", m:"сила", ex:["加","动"] },
+  { g:"又", n:"又 yòu", m:"снова / рука", ex:["友","取"] },
+  { g:"口", n:"口 kǒu", m:"рот", ex:["吃","叫"] },
+  { g:"囗", n:"囗 wéi", m:"ограда", ex:["国","回"] },
+  { g:"土", n:"土 tǔ", m:"земля", ex:["地","坐"] },
+  { g:"夕", n:"夕 xī", m:"вечер", ex:["多","外"] },
+  { g:"大", n:"大 dà", m:"большой", ex:["天","太"] },
+  { g:"女", n:"女 nǚ", m:"женщина", ex:["妈","姐"] },
+  { g:"子", n:"子 zǐ", m:"ребёнок", ex:["字","学"] },
+  { g:"宀", n:"宀 mián", m:"крыша", ex:["家","安"] },
+  { g:"小", n:"小 xiǎo", m:"маленький", ex:["少","尖"] },
+  { g:"尸", n:"尸 shī", m:"тело", ex:["尺","局"] },
+  { g:"山", n:"山 shān", m:"гора", ex:["岁","岛"] },
+  { g:"工", n:"工 gōng", m:"работа", ex:["左","巧"] },
+  { g:"巾", n:"巾 jīn", m:"полотенце", ex:["市","布"] },
+  { g:"广", n:"广 guǎng", m:"навес", ex:["店","床"] },
+  { g:"心", n:"心 xīn", m:"сердце", ex:["想","念"] },
+  { g:"手", n:"手 shǒu", m:"рука", ex:["打","看"] },
+  { g:"日", n:"日 rì", m:"солнце / день", ex:["明","时"] },
+  { g:"月", n:"月 yuè", m:"луна / месяц", ex:["朋","期"] },
+  { g:"木", n:"木 mù", m:"дерево", ex:["林","桌"] },
+  { g:"水", n:"水 shuǐ", m:"вода", ex:["汉","冰"] },
+  { g:"氵", n:"氵 sān diǎn shuǐ", m:"три капли воды", ex:["汉","没","河"] },
+  { g:"火", n:"火 huǒ", m:"огонь", ex:["热","烟"] },
+  { g:"灬", n:"灬 sì diǎn dǐ", m:"четыре точки огня", ex:["热","点"] },
+  { g:"田", n:"田 tián", m:"поле", ex:["男","电"] },
+  { g:"目", n:"目 mù", m:"глаз", ex:["看","眼"] },
+  { g:"石", n:"石 shí", m:"камень", ex:["码","碗"] },
+  { g:"立", n:"立 lì", m:"стоять", ex:["站","竞"] },
+  { g:"竹", n:"竹 zhú", m:"бамбук", ex:["笑","笔"] },
+  { g:"⺮", n:"⺮ zhú (верх)", m:"бамбук сверху", ex:["笑","第"] },
+  { g:"米", n:"米 mǐ", m:"рис", ex:["粉","糖"] },
+  { g:"糸", n:"糸 mì", m:"нить", ex:["红","系"] },
+  { g:"纟", n:"纟 sī", m:"нить (упрощ.)", ex:["红","纸"] },
+  { g:"耳", n:"耳 ěr", m:"ухо", ex:["听","聊"] },
+  { g:"艹", n:"艹 cǎo", m:"трава", ex:["花","茶"] },
+  { g:"讠", n:"讠 yán", m:"речь", ex:["说","话"] }
+];
+
+/* =================================================================
+   4. ХРАНИЛИЩЕ
+   ================================================================= */
+function loadWords() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) { words = JSON.parse(raw); return; }
+  } catch {}
+  // Первый запуск — заливаем 150 слов HSK1
+  words = HSK1_WORDS.map(([hz, py, ru]) => ({
+    hanzi: hz, pinyin: py, ru,
+    added: new Date().toISOString(),
+    shown: 0, wrong: 0
+  }));
+  saveWords();
+}
+function saveWords() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(words));
+}
+
+function loadRadicals() {
+  try {
+    const raw = localStorage.getItem(RADICAL_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch {}
+  return {};   // { "口": { shown:3, wrong:1, mastered:true } }
+}
+function saveRadicals(data) {
+  localStorage.setItem(RADICAL_KEY, JSON.stringify(data));
+}
+let radicalStats = {};
+
+/* =================================================================
+   5. УТИЛИТЫ
+   ================================================================= */
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+function daysSince(iso) {
+  const ms = Date.now() - new Date(iso).getTime();
+  return Math.floor(ms / (1000 * 60 * 60 * 24));
+}
+function ageLabel(iso) {
+  const d = daysSince(iso);
+  if (d <= 0) return 'сегодня';
+  if (d === 1) return 'вчера';
+  if (d < 7) return `${d} дн.`;
+  return 'давно';
+}
+function weightOf(w) {
+  const d = daysSince(w.added);
+  let base = d <= 0 ? WEIGHT.today
+           : d === 1 ? WEIGHT.yesterday
+           : d < 7 ? WEIGHT.week
+           : WEIGHT.old;
+  base += w.wrong * 2;
+  base = Math.max(1, base - Math.floor(w.shown / 5));
+  return base;
+}
+function weightedSample(arr, n) {
+  const pool = arr.map(w => ({ w, weight: weightOf(w) }));
+  const result = [];
+  for (let i = 0; i < n && pool.length > 0; i++) {
+    const totalW = pool.reduce((s, x) => s + x.weight, 0);
+    let r = Math.random() * totalW, idx = 0;
+    for (let j = 0; j < pool.length; j++) {
+      r -= pool[j].weight;
+      if (r <= 0) { idx = j; break; }
+    }
+    result.push(pool[idx].w);
+    pool.splice(idx, 1);
+  }
+  return result;
+}
+function toast(msg, ms = 2000) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._tm);
+  t._tm = setTimeout(() => t.classList.remove('show'), ms);
+}
+
+/* =================================================================
+   6. НОРМАЛИЗАЦИЯ ОТВЕТА
+   ================================================================= */
+function stripTones(s) {
+  return s.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+          .replace(/ü/g, 'v').replace(/ǖ|ǘ|ǚ|ǜ/g, 'v');
+}
+function normalize(s) {
+  return String(s).toLowerCase().trim()
+    .replace(/ё/g, 'е')
+    .replace(/[.,!?;:'"«»()\[\]{}\-]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+function isCorrect(userAnswer, correctRaw, mode) {
+  if (!userAnswer) return false;
+  const variants = correctRaw.split('/').map(s => s.trim());
+  const ua = normalize(userAnswer);
+  for (const variant of variants) {
+    const nv = normalize(variant);
+    if (ua === nv) return true;
+    if (mode === 'pinyin') {
+      if (stripTones(ua) === stripTones(nv)) return true;
+      const uaDigits = ua.replace(/[1-5]/g, '');
+      const nvDigits = nv.replace(/[1-5]/g, '');
+      if (stripTones(uaDigits) === stripTones(nvDigits)) return true;
+    }
+    if (mode === 'ru' && ua.length >= 3 && (nv.includes(ua) || ua.includes(nv))) {
+      return true;
+    }
+  }
+  return false;
+}
+
+/* =================================================================
+   7. ОЗВУЧКА
+   ================================================================= */
+function speak(text) {
+  if (!speakEnabled) return;
+  if (!('speechSynthesis' in window)) return;
+  try {
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = 'zh-CN';
+    u.rate = 0.85;
+    const zh = speechSynthesis.getVoices().find(v => v.lang.startsWith('zh'));
+    if (zh) u.voice = zh;
+    speechSynthesis.speak(u);
+  } catch {}
+}
+if ('speechSynthesis' in window) {
+  speechSynthesis.onvoiceschanged = () => {};
+}
+
+/* =================================================================
+   8. ЭКРАНЫ
+   ================================================================= */
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+/* =================================================================
+   9. ГЛАВНОЕ МЕНЮ
+   ================================================================= */
+function updateHome() {
+  const todayCount = words.filter(w => daysSince(w.added) <= 0).length;
+  document.getElementById('homeStats').textContent = `${words.length} слов`;
+  const totalWrong = words.reduce((s, w) => s + w.wrong, 0);
+  const mastered = Object.values(radicalStats).filter(r => r.mastered).length;
+
+  document.getElementById('todayPanel').style.display = 'block';
+  document.getElementById('todayContent').innerHTML = `
+    📖 Всего слов: <b style="color:var(--red)">${words.length}</b><br>
+    🌅 Добавлено сегодня: <b style="color:var(--red)">${todayCount}</b><br>
+    ❌ Ошибок накопилось: <b style="color:var(--red)">${totalWrong}</b><br>
+    🀄 Ключей изучено: <b style="color:var(--red)">${mastered} / ${RADICALS.length}</b>
+  `;
+}
+
+/* =================================================================
+   10. МОИ СЛОВА — список, добавление, удаление
+   ================================================================= */
+function addWords() {
+  const text = document.getElementById('inputArea').value.trim();
+  if (!text) return;
+  let added = 0, skipped = 0;
+  const today = new Date().toISOString();
+
+  text.split('\n').forEach(line => {
+    const parts = line.split('|').map(s => s.trim());
+    if (parts.length < 3) return;
+    const [hanzi, pinyin, ru] = parts;
+    if (!hanzi || !pinyin || !ru) return;
+    if (words.some(w => w.hanzi === hanzi)) { skipped++; return; }
+    words.push({ hanzi, pinyin, ru, added: today, shown: 0, wrong: 0 });
+    added++;
+  });
+
+  saveWords();
+  document.getElementById('inputArea').value = '';
+  renderWordList();
+  updateHome();
+  toast(`Добавлено: ${added}${skipped ? `, дублей: ${skipped}` : ''}`);
+}
+
+function renderWordList() {
+  const el = document.getElementById('wordList');
+  document.getElementById('wordsCount').textContent = `${words.length}`;
+  document.getElementById('listCount').textContent = `${words.length}`;
+  if (words.length === 0) {
+    el.innerHTML = '<div class="empty">Список пуст</div>';
+    return;
+  }
+  const sorted = [...words].sort((a, b) => new Date(b.added) - new Date(a.added));
+  el.innerHTML = sorted.map(w => `
+    <div class="word-row">
+      <div class="word-hz">${w.hanzi}</div>
+      <div class="word-py">${w.pinyin}</div>
+      <div class="word-ru">${w.ru}</div>
+      <div class="word-del" onclick="deleteWord('${w.hanzi.replace(/'/g,"\\'")}')">✕</div>
+    </div>`).join('');
+}
+
+function deleteWord(hanzi) {
+  if (!confirm(`Удалить "${hanzi}"?`)) return;
+  words = words.filter(w => w.hanzi !== hanzi);
+  saveWords();
+  renderWordList();
+  updateHome();
+}
+
+/* =================================================================
+   11. ТРЕНАЖЁР СЛОВ
+   ================================================================= */
 let queue = [];
 let current = null;
 let score = 0;
 let answered = 0;
 let isAnswered = false;
 
-/* =================================================================
-   2. 150 СЛОВ HSK 1
-   ================================================================= */
-const HSK1_WORDS = [
-  ["爱","ài","любить"],
-  ["八","bā","восемь"],
-  ["爸爸","bàba","папа"],
-  ["杯子","bēizi","стакан / чашка"],
-  ["北京","Běijīng","Пекин"],
-  ["本","běn","счётное слово для книг"],
-  ["不客气","bú kèqi","пожалуйста / не за что"],
-  ["不","bù","не"],
-  ["菜","cài","блюдо / овощи"],
-  ["茶","chá","чай"],
-  ["吃","chī","есть / кушать"],
-  ["出租车","chūzūchē","такси"],
-  ["打电话","dǎ diànhuà","звонить по телефону"],
-  ["大","dà","большой"],
-  ["的","de","притяжательная частица"],
-  ["点","diǎn","час / точка"],
-  ["电脑","diànnǎo","компьютер"],
-  ["电视","diànshì","телевизор"],
-  ["电影","diànyǐng","кино"],
-  ["东西","dōngxi","вещь"],
-  ["都","dōu","все"],
-  ["读","dú","читать"],
-  ["对不起","duìbuqǐ","извините"],
-  ["多","duō","много"],
-  ["多少","duōshao","сколько"],
-  ["儿子","érzi","сын"],
-  ["二","èr","два"],
-  ["饭店","fàndiàn","ресторан"],
-  ["飞机","fēijī","самолёт"],
-  ["分钟","fēnzhōng","минута"],
-  ["高兴","gāoxìng","радостный"],
-  ["个","gè","счётное слово (универсальное)"],
-  ["工作","gōngzuò","работать / работа"],
-  ["狗","gǒu","собака"],
-  ["汉语","Hànyǔ","китайский язык"],
-  ["好","hǎo","хороший"],
-  ["喝","hē","пить"],
-  ["和","hé","и / с"],
-  ["很","hěn","очень"],
-  ["后面","hòumiàn","сзади"],
-  ["回","huí","возвращаться"],
-  ["会","huì","уметь / мочь"],
-  ["火车站","huǒchēzhàn","вокзал"],
-  ["几","jǐ","сколько"],
-  ["家","jiā","дом / семья"],
-  ["叫","jiào","звать"],
-  ["今天","jīntiān","сегодня"],
-  ["九","jiǔ","девять"],
-  ["开","kāi","открывать"],
-  ["看","kàn","смотреть"],
-  ["看见","kànjiàn","увидеть"],
-  ["块","kuài","юань / кусок"],
-  ["来","lái","приходить"],
-  ["老师","lǎoshī","учитель"],
-  ["了","le","частица завершённости"],
-  ["冷","lěng","холодный"],
-  ["里","lǐ","внутри"],
-  ["六","liù","шесть"],
-  ["吗","ma","вопросительная частица"],
-  ["妈妈","māma","мама"],
-  ["买","mǎi","покупать"],
-  ["猫","māo","кошка"],
-  ["没关系","méi guānxi","ничего страшного"],
-  ["没有","méiyǒu","не иметь / нет"],
-  ["米饭","mǐfàn","рис"],
-  ["名字","míngzi","имя"],
-  ["明天","míngtiān","завтра"],
-  ["哪儿","nǎr","где"],
-  ["那","nà","тот"],
-  ["呢","ne","частица (а как насчёт)"],
-  ["能","néng","мочь"],
-  ["你","nǐ","ты"],
-  ["年","nián","год"],
-  ["女儿","nǚ'ér","дочь"],
-  ["朋友","péngyou","друг"],
-  ["漂亮","piàoliang","красивый"],
-  ["苹果","píngguǒ","яблоко"],
-  ["七","qī","семь"],
-  ["钱","qián","деньги"],
-  ["前面","qiánmiàn","впереди"],
-  ["请","qǐng","пожалуйста (просьба)"],
-  ["去","qù","идти"],
-  ["热","rè","жаркий"],
-  ["人","rén","человек"],
-  ["认识","rènshi","знать (кого-то)"],
-  ["三","sān","три"],
-  ["商店","shāngdiàn","магазин"],
-  ["上","shàng","верх / на"],
-  ["上午","shàngwǔ","утро"],
-  ["少","shǎo","мало"],
-  ["谁","shéi","кто"],
-  ["什么","shénme","что"],
-  ["十","shí","десять"],
-  ["时候","shíhou","время"],
-  ["是","shì","быть"],
-  ["书","shū","книга"],
-  ["水","shuǐ","вода"],
-  ["水果","shuǐguǒ","фрукты"],
-  ["睡觉","shuìjiào","спать"],
-  ["说","shuō","говорить"],
-  ["说话","shuōhuà","разговаривать"],
-  ["四","sì","четыре"],
-  ["岁","suì","лет (о возрасте)"],
-  ["他","tā","он"],
-  ["她","tā","она"],
-  ["太","tài","слишком"],
-  ["天气","tiānqì","погода"],
-  ["听","tīng","слушать"],
-  ["同学","tóngxué","однокурсник"],
-  ["喂","wéi","алло"],
-  ["我","wǒ","я"],
-  ["我们","wǒmen","мы"],
-  ["五","wǔ","пять"],
-  ["喜欢","xǐhuan","нравиться"],
-  ["下","xià","низ / под"],
-  ["下午","xiàwǔ","после полудня"],
-  ["下雨","xiàyǔ","идёт дождь"],
-  ["先生","xiānsheng","господин"],
-  ["现在","xiànzài","сейчас"],
-  ["想","xiǎng","хотеть / думать"],
-  ["小","xiǎo","маленький"],
-  ["小姐","xiǎojiě","госпожа / мисс"],
-  ["些","xiē","немного / несколько"],
-  ["写","xiě","писать"],
-  ["谢谢","xièxie","спасибо"],
-  ["星期","xīngqī","неделя"],
-  ["学生","xuésheng","студент"],
-  ["学习","xuéxí","учиться"],
-  ["学校","xuéxiào","школа"],
-  ["一","yī","один"],
-  ["衣服","yīfu","одежда"],
-  ["医生","yīshēng","врач"],
-  ["医院","yīyuàn","больница"],
-  ["椅子","yǐzi","стул"],
-  ["有","yǒu","иметь"],
-  ["月","yuè","месяц"],
-  ["再见","zàijiàn","до свидания"],
-  ["在","zài","в / находиться"],
-  ["怎么","zěnme","как"],
-  ["怎么样","zěnmeyàng","как дела / как насчёт"],
-  ["这","zhè","этот"],
-  ["中国","Zhōngguó","Китай"],
-  ["中午","zhōngwǔ","полдень"],
-  ["住","zhù","жить"],
-  ["桌子","zhuōzi","стол"],
-  ["字","zì","иероглиф"],
-  ["昨天","zuótiān","вчера"],
-  ["坐","zuò","сидеть"],
-  ["做","zuò","делать"]
-];
+const TITLES = {
+  ru: 'Напиши перевод',
+  pinyin: 'Напиши пиньинь',
+  hanzi: 'Напиши иероглиф'
+};
 
-/* =================================================================
-   3. ХРАНИЛИЩЕ
-   ================================================================= */
-function load() {
-  try { words = JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
-  catch { words = []; }
-}
-function save() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(words));
+function toggleChip(input) {
+  const chip = input.closest('.mode-chip');
+  chip.classList.toggle('on', input.checked);
+  if (input.id === 'mSpeak') speakEnabled = input.checked;
 }
 
+function startTraining() {
+  if (words.length < 4) {
+    toast('Нужно минимум 4 слова');
+    return;
+  }
+  const enabled = [];
+  if (document.getElementById('mRu').checked) enabled.push('ru');
+  if (document.getElementById('mPinyin').checked) enabled.push('pinyin');
+  if (document.getElementById('mHanzi').checked) enabled.push('hanzi');
+  if (enabled.length === 0) { toast('Выбери хотя бы один режим'); return; }
+
+  const inputOn = document.getElementById('mInput').checked;
+
+  const n = Math.min(QUESTIONS_PER_ROUND, words.length);
+  const selected = weightedSample(words, n);
+
+  queue = selected.map((w, idx) => ({
+    word: w,
+    mode: enabled[idx % enabled.length],
+    input: inputOn && Math.random() < INPUT_RATIO
+  }));
+
+  score = 0; answered = 0;
+  document.getElementById('score').textContent = 0;
+  showScreen('screenTrainer');
+  nextQuestion();
+}
+
+function nextQuestion() {
+  if (queue.length === 0) { finishRound(); return; }
+
+  current = queue.shift();
+  answered++;
+  isAnswered = false;
+
+  const w = current.word;
+  const hanziEl = document.getElementById('hanzi');
+  const badge = document.getElementById('badge');
+
+  if (current.mode === 'hanzi') {
+    hanziEl.textContent = w.ru;
+    hanziEl.classList.add('small');
+  } else {
+    hanziEl.textContent = w.hanzi;
+    hanziEl.classList.remove('small');
+  }
+
+  if (daysSince(w.added) <= 0) {
+    badge.textContent = 'новое сегодня';
+    badge.className = 'badge new';
+    badge.style.display = 'inline-block';
+  } else if (w.wrong > 0) {
+    badge.textContent = `ошибок: ${w.wrong}`;
+    badge.className = 'badge';
+    badge.style.display = 'inline-block';
+  } else {
+    badge.style.display = 'none';
+  }
+
+  document.getElementById('questionLabel').textContent = TITLES[current.mode];
+
+  // прогресс
+  document.getElementById('progressFill').style.width =
+    Math.round((answered - 1) / Math.min(QUESTIONS_PER_ROUND, words.length) * 100) + '%';
+
+  const optionsEl = document.getElementById('options');
+  optionsEl.innerHTML = '';
+  document.getElementById('feedback').className = 'feedback';
+  document.getElementById('feedback').innerHTML = '';
+  document.getElementById('nextBtn').style.display = 'none';
+  document.getElementById('toneBar').classList.remove('show');
+
+  const fieldByMode = { ru: 'ru', pinyin: 'pinyin', hanzi: 'hanzi' };
+  const field = fieldByMode[current.mode];
+  const correct = w[field];
+
+  if (current.input) {
+    // === Ввод текста ===
+    const inp = document.createElement('input');
+    inp.type = 'text';
+    inp.className = 'answer-input' + (current.mode === 'hanzi' ? ' hanzi-inp' : '');
+    inp.autocomplete = 'off';
+    inp.autocorrect = 'off';
+    inp.autocapitalize = 'off';
+    inp.spellcheck = false;
+    inp.placeholder = current.mode === 'hanzi' ? '汉字…'
+                    : current.mode === 'pinyin' ? 'ni hao…'
+                    : 'перевод…';
+    optionsEl.appendChild(inp);
+
+    if (current.mode === 'pinyin') {
+      const bar = document.getElementById('toneBar');
+      bar.innerHTML = ['ā','á','ǎ','à','ē','é','ě','è','ī','í','ǐ','ì',
+                       'ō','ó','ǒ','ò','ū','ú','ǔ','ù','ǖ','ǘ','ǚ','ǜ']
+        .map(ch => `<button onclick="insertTone('${ch}')">${ch}</button>`).join('');
+      bar.classList.add('show');
+    }
+
+    const checkBtn = document.createElement('button');
+    checkBtn.className = 'btn btn-primary';
+    checkBtn.textContent = '✓ Проверить';
+    checkBtn.onclick = () => checkAnswer(null, isCorrect(inp.value, correct, current.mode));
+    optionsEl.appendChild(checkBtn);
+
+    const skipBtn = document.createElement('button');
+    skipBtn.className = 'btn btn-secondary';
+    skipBtn.textContent = '🤷 Не знаю';
+    skipBtn.onclick = () => checkAnswer(null, false);
+    optionsEl.appendChild(skipBtn);
+
+    setTimeout(() => inp.focus(), 100);
+    inp.addEventListener('keydown', e => {
+      if (e.key === 'Enter') { e.preventDefault(); checkBtn.click(); }
+    });
+  } else {
+    // === Выбор из вариантов ===
+    const wrong = shuffle(
+      words.map(x => x[field]).filter(v => v !== correct)
+    ).slice(0, OPTIONS_COUNT - 1);
+
+    const opts = shuffle([correct, ...wrong]);
+    opts.forEach(v => {
+      const b = document.createElement('div');
+      b.className = 'option' + (current.mode === 'hanzi' ? ' hanzi-opt' : '');
+      b.textContent = v;
+      b.onclick = () => checkAnswer(b, v === correct);
+      optionsEl.appendChild(b);
+    });
+  }
+}
+
+function insertTone(ch) {
+  const inp = document.querySelector('.answer-input');
+  if (!inp) return;
+  const s = inp.selectionStart, e = inp.selectionEnd;
+  inp.value = inp.value.slice(0, s) + ch + inp.value.slice(e);
+  inp.selectionStart = inp.selectionEnd = s + 1;
+  inp.focus();
+}
+
+function checkAnswer(btn, correct) {
+  if (isAnswered) return;
+  isAnswered = true;
+
+  document.querySelectorAll('.option').forEach(o => o.classList.add('disabled'));
+  document.querySelectorAll('#options button').forEach(b => b.disabled = true);
+  const inp = document.querySelector('.answer-input');
+  if (inp) inp.disabled = true;
+
+  const fb = document.getElementById('feedback');
+  const fieldByMode = { ru: 'ru', pinyin: 'pinyin', hanzi: 'hanzi' };
+  const field = fieldByMode[current.mode];
+  const correctVal = current.word[field];
+
+  current.word.shown++;
+
+  if (correct) {
+    score++;
+    document.getElementById('score').textContent = score;
+    if (btn) btn.classList.add('correct');
+    if (inp) inp.classList.add('correct');
+    fb.className = 'feedback ok show';
+    fb.innerHTML = `✓ Верно!<span class="answer-reveal">${current.word.hanzi} · ${current.word.pinyin} · ${current.word.ru}</span>`;
+    if (current.mode === 'hanzi') speak(current.word.hanzi);
+  } else {
+    current.word.wrong++;
+    if (btn) btn.classList.add('wrong');
+    if (inp) inp.classList.add('wrong');
+    document.querySelectorAll('.option').forEach(o => {
+      if (o.textContent === correctVal) o.classList.add('correct');
+    });
+    fb.className = 'feedback err show';
+    fb.innerHTML = `✗ Правильно: <b>${correctVal}</b>
+      <span class="answer-reveal">${current.word.hanzi} · ${current.word.pinyin} · ${current.word.ru}</span>`;
+    if (current.mode === 'hanzi') speak(current.word.hanzi);
+  }
+  saveWords();
+
+  document.getElementById('nextBtn').style.display = 'flex';
+}
+
+function finishRound() {
+  document.getElementById('progressFill').style.width = '100%';
+  const total = answered;
+  const percent = Math.round((score / total) * 100);
+  const optionsEl = document.getElementById('options');
+  optionsEl.innerHTML = `
+    <div class="finish">
+      <span class="emoji">${percent >= 90 ? '🏆' : percent >= 70 ? '🌟' : '💪'}</span>
+      <h2>${percent >= 90 ? 'Отлично!' : percent >= 70 ? 'Хорошо!' : 'Ещё разок!'}</h2>
+      <div class="big-score">${score} / ${total}</div>
+      <div class="percent">${percent}% правильных</div>
+      <button class="btn btn-primary" onclick="startTraining()">▶ Ещё раунд</button>
+      <button class="btn btn-secondary" onclick="backToHome()">🏠 В меню</button>
+    </div>
+  `;
+  document.getElementById('hanzi').textContent = '🎉';
+  document.getElementById('hanzi').classList.remove('small');
+  document.getElementById('badge').style.display = 'none';
+  document.getElementById('questionLabel').textContent = 'Раунд завершён';
+  document.getElementById('feedback').className = 'feedback';
+  document.getElementById('nextBtn').style.display = 'none';
+  document.getElementById('toneBar').classList.remove('show');
+}
+
+function playCurrent() {
+  if (current && current.word) speak(current.word.hanzi);
+}
+
+function backToHome() {
+  showScreen('screenHome');
+  updateHome();
+}
+
 /* =================================================================
-   4. УТИЛИТЫ
+   12. КЛЮЧИ (РАДИКАЛЫ)
    ================================================================= */
-function shuffle(arr) {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a
+function renderRadicals() {
+  const grid = document.getElementById('radicalGrid');
+  const mastered = Object.values(radicalStats).filter(r => r.mastered).length;
+  document.getElementById('masteredCount').textContent = mastered;
+  document.getElementById('radicalScore').textContent = `${mastered} / ${RADICALS.length}`;
+
+  grid.innerHTML = RADICALS.map((r, idx) => {
+    const stat = radicalStats[r.g] || {};
+    const cls = stat.mastered ? 'radical-card mastered' : 'radical-card';
+    return `<div class="${cls}" onclick="openRadicalDetail(${idx})">
+      <div class="radical-glyph">${r.g}</div>
+      <div class="radical-name">${r.n.split(' ').slice(1).join(' ') || r.n}</div>
+    </div>`;
+  }).join('');
+}
+
+function openRadicalDetail(idx) {
+  const r = RADICALS[idx];
+  const stat = radicalStats[r.g] || { shown: 0, wrong: 0, mastered: false };
+  document.getElementById('rGlyph').textContent = r.g;
+  document.getElementById('rName').textContent = r.n;
+  document.getElementById('rMean').textContent = r.m;
+  document.getElementById('rExamples').innerHTML = r.ex
+    .map(e => `<span class="ex">${e}</span>`).join('');
+
+  // показать экран
+  showScreen('screenRadicalTrainer');
+  document.getElementById('rQuestion').textContent = 'Изучи ключ';
+  document.getElementById('rOptions').innerHTML = `
+    <button class="btn btn-primary" onclick="startRadicalTraining([${idx}])">▶ Тренировать этот</button>
+    <button class="btn btn-secondary" onclick="markMastered('${r.g}')">✓ Я его знаю</button>
+    <button class="btn btn-ghost" onclick="backToRadicals()">← К списку</button>
+  `;
+  document.getElementById('rFeedback').className = 'feedback';
+  document.getElementById('rNextBtn').style.display = 'none';
+  document.getElementById('rProgressFill').style.width = '0%';
+}
+
+function markMastered(glyph) {
+  radicalStats[glyph] = radicalStats[glyph] || { shown: 0, wrong: 0, mastered: false };
+  radicalStats[glyph].mastered = true;
+  saveRadicals(radicalStats);
+  toast(`Ключ ${glyph} отмечен как изученный`);
+  backToRadicals();
+}
+
+function backToRadicals() {
+  showScreen('screenRadicals');
+  renderRadicals();
+}
+
+/* --- Тренажёр ключей --- */
+let rQueue = [];
+let rCurrent = null;
+let rScore = 0;
+let rAnswered = 0;
+let rIsAnswered = false;
+let rTotal = 0;
+
+function startRadicalTraining(onlyIdxs = null) {
+  const pool = onlyIdxs ? onlyIdxs.map(i => RADICALS[i]) : RADICALS;
+  if (pool.length < 4) { toast('Нужно минимум 4 ключа'); return; }
+
+  // 10 вопросов со взвешиванием по ошибкам
+  const weighted = pool.map(r => {
+    const st = radicalStats[r.g] || { shown: 0, wrong: 0, mastered: false };
+    let w = 3 + st.wrong * 2 - Math.floor(st.shown / 5);
+    if (st.mastered) w = Math.max(1, w - 2);
+    return { r, w: Math.max(1, w) };
+  });
+
+  const selected = [];
+  const poolCopy = [...weighted];
+  for (let i = 0; i < Math.min(QUESTIONS_PER_ROUND, poolCopy.length); i++) {
+    const total = poolCopy.reduce((s, x) => s + x.w, 0);
+    let rand = Math.random() * total, idx = 0;
+    for (let j = 0; j < poolCopy.length; j++) {
+      rand -= poolCopy[j].w;
+      if (rand <= 0) { idx = j; break; }
+    }
+    selected.push(poolCopy[idx].r);
+    poolCopy.splice(idx, 1);
+  }
+
+  rQueue = selected.map(r => ({
+    radical: r,
+    // чередуем: узнать по значению или по глифу
+    mode: Math.random() < 0.5 ? 'glyph2name' : 'name2glyph'
+  }));
+
+  rScore = 0; rAnswered = 0; rTotal = rQueue.length;
+  document.getElementById('rScore').textContent = 0;
+  showScreen('screenRadicalTrainer');
+  nextRadicalQuestion();
+}
+
+function nextRadicalQuestion() {
+  if (rQueue.length === 0) { finishRadicalRound(); return; }
+
+  rCurrent = rQueue.shift();
+  rAnswered++;
+  rIsAnswered = false;
+
+  const r = rCurrent.radical;
+  document.getElementById('rProgressFill').style.width =
+    Math.round((rAnswered - 1) / rTotal * 100) + '%';
+
+  const glyphEl = document.getElementById('rGlyph');
+  const nameEl = document.getElementById('rName');
+  const meanEl = document.getElementById('rMean');
+  const exEl = document.getElementById('rExamples');
+
+  if (rCurrent.mode === 'glyph2name') {
+    glyphEl.textContent = r.g;
+    glyphEl.style.fontSize = '140px';
+    nameEl.textContent = '?';
+    meanEl.textContent = 'Выбери правильное название';
+    exEl.innerHTML = '';
+    document.getElementById('rQuestion').textContent = 'Что это за ключ?';
+  } else {
+    glyphEl.textContent = '?';
+    glyphEl.style.fontSize = '80px';
+    nameEl.textContent = r.n;
+    meanEl.textContent = r.m;
+    exEl.innerHTML = '';
+    document.getElementById('rQuestion').textContent = 'Выбери правильный глиф';
+  }
+
+  const optionsEl = document.getElementById('rOptions');
+  optionsEl.innerHTML = '';
+  document.getElementById('rFeedback').className = 'feedback';
+  document.getElementById('rFeedback').innerHTML = '';
+  document.getElementById('rNextBtn').style.display = 'none';
+
+  if (rCurrent.mode === 'glyph2name') {
+    const correct = r.n;
+    const wrong = shuffle(RADICALS.filter(x => x.g !== r.g).map(x => x.n))
+      .slice(0, OPTIONS_COUNT - 1);
+    shuffle([correct, ...wrong]).forEach(v => {
+      const b = document.createElement('div');
+      b.className = 'option';
+      b.textContent = v;
+      b.onclick = () => checkRadicalAnswer(b, v === correct);
+      optionsEl.appendChild(b);
+    });
+  } else {
+    const correct = r.g;
+    const wrong = shuffle(RADICALS.filter(x => x.g !== r.g).map(x => x.g))
+      .slice(0, OPTIONS_COUNT - 1);
+    shuffle([correct, ...wrong]).forEach(v => {
+      const b = document.createElement('div');
+      b.className = 'option hanzi-opt';
+      b.textContent = v;
+      b.onclick = () => checkRadicalAnswer(b, v === correct);
+      optionsEl.appendChild(b);
+    });
+  }
+}
+
+function checkRadicalAnswer(btn, correct) {
+  if (rIsAnswered) return;
+  rIsAnswered = true;
+
+  document.querySelectorAll('#rOptions .option').forEach(o => o.classList.add('disabled'));
+
+  const r = rCurrent.radical;
+  const fb = document.getElementById('rFeedback');
+  const st = radicalStats[r.g] || { shown: 0, wrong: 0, mastered: false };
+  st.shown++;
+
+  if (correct) {
+    rScore++;
+    document.getElementById('rScore').textContent = rScore;
+    btn.classList.add('correct');
+    fb.className = 'feedback ok show';
+    fb.innerHTML = `✓ Верно!<span class="answer-reveal">${r.g} · ${r.n} — ${r.m}</span>`;
+  } else {
+    st.wrong++;
+    btn.classList.add('wrong');
+    document.querySelectorAll('#rOptions .option').forEach(o => {
+      const correctVal = rCurrent.mode === 'glyph2name' ? r.n : r.g;
+      if (o.textContent === correctVal) o.classList.add('correct');
+    });
+    fb.className = 'feedback err show';
+    fb.innerHTML = `✗ Правильно: <b>${rCurrent.mode === 'glyph2name' ? r.n : r.g}</b>
+      <span class="answer-reveal">${r.g} · ${r.n} — ${r.m}</span>`;
+  }
+
+  // автоотметка «изучено» при 3+ правильных подряд без ошибок — упрощённо:
+  if (st.shown >= 3 && st.wrong === 0 && !st.mastered) {
+    st.mastered = true;
+  }
+  radicalStats[r.g] = st;
+  saveRadicals(radicalStats);
+
+  // показать глиф и название после ответа
+  document.getElementById('rGlyph').textContent = r.g;
+  document.getElementById('rGlyph').style.fontSize = '140px';
+  document.getElementById('rName').textContent = r.n;
+  document.getElementById('rMean').textContent = r.m;
+  document.getElementById('rExamples').innerHTML = r.ex
+    .map(e => `<span class="ex">${e}</span>`).join('');
+
+  document.getElementById('rNextBtn').style.display = 'flex';
+}
+
+function finishRadicalRound() {
+  document.getElementById('rProgressFill').style.width = '100%';
+  const percent = Math.round((rScore / rTotal) * 100);
+  document.getElementById('rOptions').innerHTML = `
+    <div class="finish">
+      <span class="emoji">${percent >= 90 ? '🀄' : percent >= 70 ? '✨' : '💪'}</span>
+      <h2>${percent >= 90 ? 'Мастер ключей!' : percent >= 70 ? 'Хорошо!' : 'Ещё разок!'}</h2>
+      <div class="big-score">${rScore} / ${rTotal}</div>
+      <div class="percent">${percent}% правильных</div>
+      <button class="btn btn-gold" onclick="startRadicalTraining()">▶ Ещё раунд</button>
+      <button class="btn btn-secondary" onclick="backToRadicals()">🀄 К списку ключей</button>
+    </div>
+  `;
+  document.getElementById('rGlyph').textContent = '🎉';
+  document.getElementById('rGlyph').style.fontSize = '120px';
+  document.getElementById('rName').textContent = 'Раунд завершён';
+  document.getElementById('rMean').textContent = '';
+  document.getElementById('rExamples').innerHTML = '';
+  document.getElementById('rQuestion').textContent = '';
+  document.getElementById('rFeedback').className = 'feedback';
+  document.getElementById('rNextBtn').style.display = 'none';
+}
+
+/* =================================================================
+   13. ГОРЯЧИЕ КЛАВИШИ
+   ================================================================= */
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    if (document.getElementById('screenTrainer').classList.contains('active')) {
+      if (isAnswered && document.getElementById('nextBtn').style.display !== 'none') {
+        e.preventDefault(); nextQuestion();
+      }
+    } else if (document.getElementById('screenRadicalTrainer').classList.contains('active')) {
+      if (rIsAnswered && document.getElementById('rNextBtn').style.display !== 'none') {
+        e.preventDefault(); nextRadicalQuestion();
+      }
+    }
+  }
+});
+
+/* =================================================================
+   14. СТАРТ
+   ================================================================= */
+loadWords();
+radicalStats = loadRadicals();
+updateHome();
+</script>
+</body>
+</html>

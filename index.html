@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#c73e3a">
+<title>汉语 HSK 1 · Тренажёр</title>
+<style>
+  /* ============ БАЗА ============ */
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  :root {
+    --red: #c73e3a;
+    --red-dark: #a8302c;
+    --red-soft: #f4d5d3;
+    --gold: #d4a24e;
+    --ink: #1a1a1a;
+    --gray: #6b7280;
+    --gray-light: #e8eaed;
+    --bg: #faf7f2;
+    --card: #ffffff;
+    --green: #2f9e5c;
+    --green-soft: #d4efdf;
+    --red-bad: #dc2626;
+    --red-soft-bad: #fee2e2;
+  }
+  html, body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+                 "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.5;
+  }
+
+  /* Декоративный фон с иероглифами */
+  body::before {
+    content: "汉语 学习 中国";
+    position: fixed;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%) rotate(-15deg);
+    font-size: 180px;
+    font-weight: 900;
+    color: rgba(199, 62, 58, 0.025);
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 0;
+    letter-spacing: 40px;
+  }
+
+  .wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 520px;
+    margin: 0 auto;
+    padding: 20px 20px 40px;
+  }
+
+  /* ============ ЭКРАНЫ ============ */
+  .screen { display: none; animation: fadeIn 0.3s ease; }
+  .screen.active { display: block; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ============ ШАПКА ============ */
+  .logo {
+    text-align: center;
+    margin-bottom: 24px;
+    padding-top: 8px;
+  }
+  .logo h1 {
+    font-size: 34px;
+    font-weight: 800;
+    color: var(--red);
+    letter-spacing: 2px;
+    margin-bottom: 4px;
+    font-family: "PingFang SC", "Hiragino Sans GB", serif;
+  }
+  .logo .sub {
+    font-size: 13px;
+    color: var(--gray);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .logo .deco-line {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 12px;
+    color: var(--gold);
+    font-size: 14px;
+  }
+  .logo .deco-line::before,
+  .logo .deco-line::after {
+    content: "";
+    height: 1px;
+    width: 50px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+  }
+
+  /* ============ КАРТОЧКИ / ПАНЕЛИ ============ */
+  .panel {
+    background: var(--card);
+    border-radius: 20px;
+    padding: 22px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.03);
+    border: 1px solid rgba(199, 62, 58, 0.06);
+    margin-bottom: 16px;
+  }
+  .panel-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--red);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    letter-spacing: 0.5px;
+  }
+  .panel-title .count {
+    margin-left: auto;
+    font-size: 13px;
+    color: var(--gray);
+    font-weight: 500;
+  }
+
+  /* ============ КНОПКИ ============ */
+  .btn {
+    width: 100%;
+    padding: 15px 20px;
+    border: none;
+    border-radius: 14px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.15s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .btn:active { transform: scale(0.98); }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--red) 0%, var(--red-dark) 100%);
+    color: white;
+    box-shadow: 0 4px 14px rgba(199, 62, 58, 0.25);
+  }
+  .btn-primary:active {
+    box-shadow: 0 2px 6px rgba(199, 62, 58, 0.25);
+  }
+  .btn-secondary {
+    background: var(--gray-light);
+    color: var(--ink);
+  }
+  .btn-ghost {
+    background: transparent;
+    color: var(--gray);
+    padding: 10px;
+    font-size: 14px;
+  }
+  .btn + .btn { margin-top: 10px; }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  /* ============ TEXTAREA ВВОДА СЛОВ ============ */
+  .hint {
+    color: var(--gray);
+    font-size: 13px;
+    line-height: 1.6;
+    margin-bottom: 14px;
+    padding: 12px 14px;
+    background: rgba(212, 162, 78, 0.06);
+    border-left: 3px solid var(--gold);
+    border-radius: 8px;
+  }
+  .hint code {
+    background: rgba(0,0,0,0.06);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 12px;
+    color: var(--red-dark);
+  }
+  textarea {
+    width: 100%;
+    height: 160px;
+    padding: 14px;
+    border: 2px solid var(--gray-light);
+    border-radius: 12px;
+    font-size: 14px;
+    font-family: "SF Mono", Menlo, Consolas, monospace;
+    resize: vertical;
+    outline: none;
+    transition: border-color 0.15s ease;
+    line-height: 1.7;
+    color: var(--ink);
+  }
+  textarea:focus {
+    border-color: var(--red);
+    background: rgba(199, 62, 58, 0.015);
+  }
+
+  /* ============ СПИСОК СЛОВ ============ */
+  .word-list {
+    max-height: 300px;
+    overflow-y: auto;
+    margin-top: 4px;
+    border-radius: 12px;
+  }
+  .word-list::-webkit-scrollbar { width: 6px; }
+  .word-list::-webkit-scrollbar-thumb {
+    background: var(--gray-light);
+    border-radius: 3px;
+  }
+  .word-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 4px;
+    border-bottom: 1px solid rgba(0,0,0,0.04);
+    font-size: 14px;
+  }
+  .word-row:last-child { border-bottom: none; }
+  .word-hz {
+    font-size: 22px;
+    font-weight: 600;
+    min-width: 66px;
+    color: var(--ink);
+    font-family: "PingFang SC", "Hiragino Sans GB", serif;
+  }
+  .word-py {
+    color: var(--red);
+    font-size: 13px;
+    min-width: 78px;
+    font-weight: 500;
+  }
+  .word-ru {
+    color: var(--gray);
+    flex: 1;
+    font-size: 13px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .word-del {
+    color: #cbd5e0;
+    cursor: pointer;
+    padding: 4px 8px;
+    font-size: 18px;
+    line-height: 1;
+    border-radius: 6px;
+    transition: all 0.15s;
+  }
+  .word-del:hover, .word-del:active {
+    color: var(--red-bad);
+    background: var(--red-soft-bad);
+  }
+  .empty {
+    color: #a0aec0;
+    text-align: center;
+    padding: 30px 20px;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  /* ============ ПРОГРЕСС ============ */
+  .progress-bar {
+    height: 4px;
+    background: var(--gray-light);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--red) 0%, var(--gold) 100%);
+    border-radius: 2px;
+    transition: width 0.4s ease;
+  }
+
+  /* ============ ШАПКА ТРЕНАЖЁРА ============ */
+  .trainer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+    font-size: 14px;
+    color: var(--gray);
+  }
+  .trainer-header .score {
+    font-weight: 700;
+    color: var(--green);
+    background: var(--green-soft);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+  }
+
+  /* ============ ЧЕКБОКСЫ РЕЖИМА ============ */
+  .modes {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 14px;
+    background: var(--card);
+    padding: 8px;
+    border-radius: 14px;
+    border: 1px solid rgba(0,0,0,0.05);
+  }
+  .mode-chip {
+    flex: 1;
+    padding: 10px 4px;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    color: var(--gray);
+    user-select: none;
+  }
+  .mode-chip.on {
+    background: linear-gradient(135deg, var(--red) 0%, var(--red-dark) 100%);
+    color: white;
+    box-shadow: 0 2px 8px rgba(199, 62, 58, 0.2);
+  }
+  .mode-chip input { display: none; }
+
+  /* ============ КАРТОЧКА СЛОВА ============ */
+  .hanzi-card {
+    background: var(--card);
+    border-radius: 24px;
+    padding: 44px 24px;
+    text-align: center;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04);
+    border: 1px solid rgba(199, 62, 58, 0.06);
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hanzi-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--red), var(--gold), var(--red));
+    opacity: 0.6;
+  }
+  .hanzi-main {
+    font-size: 96px;
+    font-weight: 700;
+    line-height: 1.05;
+    color: var(--ink);
+    font-family: "PingFang SC", "Hiragino Sans GB", "STHeiti", serif;
+    letter-spacing: 4px;
+    transition: font-size 0.2s;
+    word-break: break-word;
+  }
+  .hanzi-main.small {
+    font-size: 40px;
+    font-family: inherit;
+    letter-spacing: 0;
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--red-dark);
+  }
+  .badge {
+    display: inline-block;
+    margin-top: 14px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+    background: rgba(212, 162, 78, 0.15);
+    color: #8a6420;
+  }
+  .badge.new {
+    background: rgba(199, 62, 58, 0.12);
+    color: var(--red-dark);
+  }
+
+  .play-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 16px;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 12px;
+    background: rgba(199, 62, 58, 0.08);
+    color: var(--red);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.15s;
+  }
+  .play-btn:active {
+    background: rgba(199, 62, 58, 0.15);
+    transform: scale(0.96);
+  }
+
+  /* ============ ВОПРОС ============ */
+  .question-label {
+    text-align: center;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--gray);
+    margin-bottom: 14px;
+    font-weight: 600;
+  }
+
+  /* ============ ВАРИАНТЫ ============ */
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .option {
+    background: var(--card);
+    border: 2px solid var(--gray-light);
+    border-radius: 14px;
+    padding: 16px 20px;
+    font-size: 17px;
+    text-align: center;
+    cursor: pointer;
+    font-weight: 500;
+    color: var(--ink);
+    transition: all 0.15s;
+    font-family: inherit;
+  }
+  .option:active { transform: scale(0.98); }
+  .option.hanzi-opt {
+    font-size: 28px;
+    font-weight: 600;
+    font-family: "PingFang SC", "Hiragino Sans GB", serif;
+    letter-spacing: 2px;
+  }
+  .option.correct {
+    background: var(--green-soft);
+    border-color: var(--green);
+    color: #14532d;
+  }
+  .option.wrong {
+    background: var(--red-soft-bad);
+    border-color: var(--red-bad);
+    color: #7f1d1d;
+  }
+  .option.disabled { pointer-events: none; opacity: 0.9; }
+
+  /* ============ ПОЛЕ ВВОДА ============ */
+  .answer-input {
+    width: 100%;
+    padding: 18px;
+    border: 2px solid var(--gray-light);
+    border-radius: 14px;
+    font-size: 20px;
+    text-align: center;
+    outline: none;
+    font-family: inherit;
+    transition: all 0.15s;
+    color: var(--ink);
+    background: var(--card);
+  }
+  .answer-input:focus {
+    border-color: var(--red);
+    box-shadow: 0 0 0 4px rgba(199, 62, 58, 0.08);
+  }
+  .answer-input.hanzi-inp {
+    font-size: 32px;
+    font-family: "PingFang SC", "Hiragino Sans GB", serif;
+    letter-spacing: 2px;
+  }
+  .answer-input.correct {
+    border-color: var(--green);
+    background: var(--green-soft);
+    color: #14532d;
+  }
+  .answer-input.wrong {
+    border-color: var(--red-bad);
+    background: var(--red-soft-bad);
+    color: #7f1d1d;
+  }
+  .answer-input:disabled { opacity: 1; }
+  .input-tip {
+    text-align: center;
+    color: #a0aec0;
+    font-size: 12px;
+    margin-top: 8px;
+    font-style: italic;
+  }
+
+  /* ============ ТОНАЛЬНАЯ КЛАВИАТУРА ============ */
+  .tone-bar {
+    display: none;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 10px;
+    justify-content: center;
+  }
+  .tone-bar.show { display: flex; }
+  .tone-bar button {
+    padding: 8px 11px;
+    border: 1px solid var(--gray-light);
+    background: var(--card);
+    border-radius: 8px;
+    font-size: 17px;
+    cursor: pointer;
+    min-width: 40px;
+    font-family: inherit;
+    transition: all 0.1s;
+    color: var(--ink);
+  }
+  .tone-bar button:active {
+    background: var(--red);
+    color: white;
+    border-color: var(--red);
+    transform: scale(0.94);
+  }
+
+  /* ============ ФИДБЕК ============ */
+  .feedback {
+    text-align: center;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 14px 16px;
+    border-radius: 14px;
+    margin-top: 12px;
+    opacity: 0;
+    transition: opacity 0.25s;
+    line-height: 1.4;
+  }
+  .feedback.show { opacity: 1; }
+  .feedback.ok {
+    background: var(--green-soft);
+    color: #14532d;
+  }
+  .feedback.err {
+    background: var(--red-soft-bad);
+    color: #7f1d1d;
+  }
+  .feedback .answer-reveal {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    margin-top: 6px;
+    opacity: 0.85;
+  }
+  .feedback .answer-reveal b {
+    font-family: "PingFang SC", "Hiragino Sans GB", serif;
+    font-size: 16px;
+  }
+
+  /* ============ ФИНАЛ РАУНДА ============ */
+  .finish {
+    text-align: center;
+    padding: 40px 20px;
+    animation: fadeIn 0.4s ease;
+  }
+  .finish .emoji {
+    font-size: 72px;
+    margin-bottom: 20px;
+    display: block;
+  }
+  .finish h2 {
+    font-size: 26px;
+    color: var(--red);
+    margin-bottom: 24px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+  }
+  .finish .big-score {
+    font-size: 56px;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--red), var(--gold));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .finish .percent {
+    color: var(--gray);
+    font-size: 15px;
+    margin-bottom: 32px;
+  }
+
+  /* ============ ТОСТ ============ */
+  .toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--ink);
+    color: white;
+    padding: 12px 22px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    z-index: 100;
+    opacity: 0;
+    transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    max-width: 90vw;
+    text-align: center;
+  }
+  .toast.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <!-- ===================================================== -->
+  <!-- ЭКРАН 1: МОИ СЛОВА                                    -->
+  <!-- ===================================================== -->
+  <div class="screen active" id="screenInput">
+    <div class="logo">
+      <h1>汉语</h1>
+      <div class="sub">HSK 1 · 我的词汇</div>
+      <div class="deco-line">✦</div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">
+        📝 Добавить слова
+        <span class="count" id="totalCount">0 / 150</span>
+      </div>
+
+      <div class="hint">
+        Каждая строка — одно слово:<br>
+        <code>иероглиф | пиньинь | перевод</code><br>
+        Несколько значений — через слэш: <code>хороший / хорошо</code>
+      </div>
+
+      <textarea id="inputArea" placeholder="你好 | nǐ hǎo | привет
+谢谢 | xiè xie | спасибо
+苹果 | píng guǒ | яблоко"></textarea>
+
+      <button class="btn btn-primary" onclick="addWords()" style="margin-top:14px;">
+        ➕ Добавить
+      </button>
+      <button class="btn btn-secondary" onclick="loadHsk1()">
+        📚 Загрузить все 150 слов HSK 1
+      </button>
+      <button class="btn btn-primary" onclick="startTraining()" style="margin-top:14px;">
+        ▶ Начать тренировку
+      </button>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">
+        📖 Мои слова
+        <span class="count" id="wordsCount"></span>
+      </div>
+      <div class="word-list" id="wordList"></div>
+    </div>
+  </div>
+
+  <!-- ===================================================== -->
+  <!-- ЭКРАН 2: ТРЕНАЖЁР                                     -->
+  <!-- ===================================================== -->
+  <div class="screen" id="screenTrainer">
+    <div class="trainer-header">
+      <button class="btn btn-ghost" style="width:auto;"
+              onclick="backToWords()">← Слова</button>
+      <span class="score">✓ <span id="score">0</span></span>
+    </div>
+
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill" style="width:0%"></div>
+    </div>
+
+    <div class="modes">
+      <label class="mode-chip on" id="chipRu">
+        <input type="checkbox" id="mRu" checked> 🇷🇺 Перевод
+      </label>
+      <label class="mode-chip on" id="chipPy">
+        <input type="checkbox" id="mPinyin" checked> Pinyin
+      </label>
+      <label class="mode-chip on" id="chipHz">
+        <input type="checkbox" id="mHanzi" checked> 汉字
+      </label>
+    </div>
+
+    <div class="modes" style="margin-top:-6px;">
+      <label class="mode-chip on" id="chipInput">
+        <input type="checkbox" id="mInput" checked> ⌨ Ввод
+      </label>
+      <label class="mode-chip on" id="chipSpeak">
+        <input type="checkbox" id="mSpeak" checked> 🔊 Озвучка
+      </label>
+    </div>
+
+    <div class="hanzi-card">
+      <div class="hanzi-main" id="hanzi">你好</div>
+      <div class="badge" id="badge" style="display:none">новое</div>
+      <button class="play-btn" onclick="playCurrent()">🔊 Послушать</button>
+    </div>
+
+    <div class="question-label" id="questionLabel">Напиши перевод</div>
+
+    <div class="options" id="options"></div>
+
+    <div class="tone-bar" id="toneBar"></div>
+
+    <div class="feedback" id="feedback"></div>
+
+    <button class="btn btn-primary" id="nextBtn" style="display:none; margin-top:12px;"
+            onclick="nextQuestion()">Далее →</button>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* =================================================================
+   1. ХРАНИЛИЩЕ И ГЛОБАЛЬНЫЕ НАСТРОЙКИ
+   ================================================================= */
+const STORAGE_KEY = 'hsk1_trainer_v1';
+const QUESTIONS_PER_ROUND = 10;
+const OPTIONS_COUNT = 4;
+const INPUT_RATIO = 0.5;   // половина вопросов — ввод, половина — выбор
+
+const WEIGHT = { today: 5, yesterday: 3, week: 2, old: 1 };
+
+let words = [];
+let speakEnabled = true;
+let queue = [];
+let current = null;
+let score = 0;
+let answered = 0;
+let isAnswered = false;
+
+/* =================================================================
+   2. 150 СЛОВ HSK 1
+   ================================================================= */
+const HSK1_WORDS = [
+  ["爱","ài","любить"],
+  ["八","bā","восемь"],
+  ["爸爸","bàba","папа"],
+  ["杯子","bēizi","стакан / чашка"],
+  ["北京","Běijīng","Пекин"],
+  ["本","běn","счётное слово для книг"],
+  ["不客气","bú kèqi","пожалуйста / не за что"],
+  ["不","bù","не"],
+  ["菜","cài","блюдо / овощи"],
+  ["茶","chá","чай"],
+  ["吃","chī","есть / кушать"],
+  ["出租车","chūzūchē","такси"],
+  ["打电话","dǎ diànhuà","звонить по телефону"],
+  ["大","dà","большой"],
+  ["的","de","притяжательная частица"],
+  ["点","diǎn","час / точка"],
+  ["电脑","diànnǎo","компьютер"],
+  ["电视","diànshì","телевизор"],
+  ["电影","diànyǐng","кино"],
+  ["东西","dōngxi","вещь"],
+  ["都","dōu","все"],
+  ["读","dú","читать"],
+  ["对不起","duìbuqǐ","извините"],
+  ["多","duō","много"],
+  ["多少","duōshao","сколько"],
+  ["儿子","érzi","сын"],
+  ["二","èr","два"],
+  ["饭店","fàndiàn","ресторан"],
+  ["飞机","fēijī","самолёт"],
+  ["分钟","fēnzhōng","минута"],
+  ["高兴","gāoxìng","радостный"],
+  ["个","gè","счётное слово (универсальное)"],
+  ["工作","gōngzuò","работать / работа"],
+  ["狗","gǒu","собака"],
+  ["汉语","Hànyǔ","китайский язык"],
+  ["好","hǎo","хороший"],
+  ["喝","hē","пить"],
+  ["和","hé","и / с"],
+  ["很","hěn","очень"],
+  ["后面","hòumiàn","сзади"],
+  ["回","huí","возвращаться"],
+  ["会","huì","уметь / мочь"],
+  ["火车站","huǒchēzhàn","вокзал"],
+  ["几","jǐ","сколько"],
+  ["家","jiā","дом / семья"],
+  ["叫","jiào","звать"],
+  ["今天","jīntiān","сегодня"],
+  ["九","jiǔ","девять"],
+  ["开","kāi","открывать"],
+  ["看","kàn","смотреть"],
+  ["看见","kànjiàn","увидеть"],
+  ["块","kuài","юань / кусок"],
+  ["来","lái","приходить"],
+  ["老师","lǎoshī","учитель"],
+  ["了","le","частица завершённости"],
+  ["冷","lěng","холодный"],
+  ["里","lǐ","внутри"],
+  ["六","liù","шесть"],
+  ["吗","ma","вопросительная частица"],
+  ["妈妈","māma","мама"],
+  ["买","mǎi","покупать"],
+  ["猫","māo","кошка"],
+  ["没关系","méi guānxi","ничего страшного"],
+  ["没有","méiyǒu","не иметь / нет"],
+  ["米饭","mǐfàn","рис"],
+  ["名字","míngzi","имя"],
+  ["明天","míngtiān","завтра"],
+  ["哪儿","nǎr","где"],
+  ["那","nà","тот"],
+  ["呢","ne","частица (а как насчёт)"],
+  ["能","néng","мочь"],
+  ["你","nǐ","ты"],
+  ["年","nián","год"],
+  ["女儿","nǚ'ér","дочь"],
+  ["朋友","péngyou","друг"],
+  ["漂亮","piàoliang","красивый"],
+  ["苹果","píngguǒ","яблоко"],
+  ["七","qī","семь"],
+  ["钱","qián","деньги"],
+  ["前面","qiánmiàn","впереди"],
+  ["请","qǐng","пожалуйста (просьба)"],
+  ["去","qù","идти"],
+  ["热","rè","жаркий"],
+  ["人","rén","человек"],
+  ["认识","rènshi","знать (кого-то)"],
+  ["三","sān","три"],
+  ["商店","shāngdiàn","магазин"],
+  ["上","shàng","верх / на"],
+  ["上午","shàngwǔ","утро"],
+  ["少","shǎo","мало"],
+  ["谁","shéi","кто"],
+  ["什么","shénme","что"],
+  ["十","shí","десять"],
+  ["时候","shíhou","время"],
+  ["是","shì","быть"],
+  ["书","shū","книга"],
+  ["水","shuǐ","вода"],
+  ["水果","shuǐguǒ","фрукты"],
+  ["睡觉","shuìjiào","спать"],
+  ["说","shuō","говорить"],
+  ["说话","shuōhuà","разговаривать"],
+  ["四","sì","четыре"],
+  ["岁","suì","лет (о возрасте)"],
+  ["他","tā","он"],
+  ["她","tā","она"],
+  ["太","tài","слишком"],
+  ["天气","tiānqì","погода"],
+  ["听","tīng","слушать"],
+  ["同学","tóngxué","однокурсник"],
+  ["喂","wéi","алло"],
+  ["我","wǒ","я"],
+  ["我们","wǒmen","мы"],
+  ["五","wǔ","пять"],
+  ["喜欢","xǐhuan","нравиться"],
+  ["下","xià","низ / под"],
+  ["下午","xiàwǔ","после полудня"],
+  ["下雨","xiàyǔ","идёт дождь"],
+  ["先生","xiānsheng","господин"],
+  ["现在","xiànzài","сейчас"],
+  ["想","xiǎng","хотеть / думать"],
+  ["小","xiǎo","маленький"],
+  ["小姐","xiǎojiě","госпожа / мисс"],
+  ["些","xiē","немного / несколько"],
+  ["写","xiě","писать"],
+  ["谢谢","xièxie","спасибо"],
+  ["星期","xīngqī","неделя"],
+  ["学生","xuésheng","студент"],
+  ["学习","xuéxí","учиться"],
+  ["学校","xuéxiào","школа"],
+  ["一","yī","один"],
+  ["衣服","yīfu","одежда"],
+  ["医生","yīshēng","врач"],
+  ["医院","yīyuàn","больница"],
+  ["椅子","yǐzi","стул"],
+  ["有","yǒu","иметь"],
+  ["月","yuè","месяц"],
+  ["再见","zàijiàn","до свидания"],
+  ["在","zài","в / находиться"],
+  ["怎么","zěnme","как"],
+  ["怎么样","zěnmeyàng","как дела / как насчёт"],
+  ["这","zhè","этот"],
+  ["中国","Zhōngguó","Китай"],
+  ["中午","zhōngwǔ","полдень"],
+  ["住","zhù","жить"],
+  ["桌子","zhuōzi","стол"],
+  ["字","zì","иероглиф"],
+  ["昨天","zuótiān","вчера"],
+  ["坐","zuò","сидеть"],
+  ["做","zuò","делать"]
+];
+
+/* =================================================================
+   3. ХРАНИЛИЩЕ
+   ================================================================= */
+function load() {
+  try { words = JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+  catch { words = []; }
+}
+function save() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(words));
+}
+
+/* =================================================================
+   4. УТИЛИТЫ
+   ================================================================= */
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a

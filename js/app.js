@@ -49,6 +49,7 @@
     // Обновляем главный экран при возврате
     if (screenId === 'screenHome') {
       Stats.refresh();
+      if (window.Pet) Pet.render();
     }
 
     // Обновляем список слов при открытии
@@ -256,7 +257,8 @@
     if (!window.Radicals) console.error('✗ Модуль radicals.js не загружен');
     if (!window.Training) console.error('✗ Модуль training.js не загружен');
     if (!window.NewModes) console.error('✗ Модуль newmodes.js не загружен');
-
+   
+   
     // Инициализируем модули в правильном порядке
     try {
       if (window.Settings) Settings.init();
@@ -264,6 +266,8 @@
       if (window.Radicals) Radicals.init();
       if (window.Training) Training.init();
       if (window.NewModes) NewModes.init();
+      if (window.Pet)    Pet.init();
+      if (window.Dragon) Dragon.init();
     } catch (e) {
       console.error('[app.js] Ошибка при инициализации модулей:', e);
     }

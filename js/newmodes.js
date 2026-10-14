@@ -1,40 +1,23 @@
 /* =====================================================================
-   newmodes.js — особые тренировки
-   =====================================================================
-   Экспортирует в глобальный объект `NewModes`:
-     NewModes.init()
-     NewModes.showMenu()             — открыть меню выбора режима
-     NewModes.start(mode)            — начать тренировку
-                                       mode: 'tones' | 'listening'
-                                             'wordorder' | 'similar'
-     NewModes.next()                 — следующий вопрос
-     NewModes.play()                 — озвучить текущий вопрос (для аудирования)
-     NewModes.backToMenu()           — вернуться в меню
-     NewModes.backToHome()           — вернуться в главное меню
+   newmodes.js — особые тренировки (исправленная версия)
    ===================================================================== */
 
 (function () {
   'use strict';
 
-  /* ============================================================
-     1. Константы
-     ============================================================ */
   const QUESTIONS_PER_ROUND = 10;
   const OPTIONS_COUNT = 4;
 
-  /* ============================================================
-     2. Состояние
-     ============================================================ */
-  let mode = null;             // 'tones' | 'listening' | 'wordorder' | 'similar'
-  let queue = [];              // очередь вопросов
-  let current = null;          // текущий вопрос
+  let mode = null;
+  let queue = [];
+  let current = null;
   let score = 0;
   let answered = 0;
   let totalInRound = 0;
   let isAnswered = false;
 
   /* ============================================================
-     3. Меню
+     Меню
      ============================================================ */
   function showMenu() {
     if (window.App && typeof App.go === 'function') {
@@ -43,7 +26,6 @@
   }
 
   function backToMenu() {
-    // очистим состояние
     queue = [];
     current = null;
     isAnswered = false;
@@ -58,7 +40,7 @@
   }
 
   /* ============================================================
-     4. Запуск тренировки
+     Запуск
      ============================================================ */
   function start(m) {
     mode = m;
@@ -84,11 +66,9 @@
     totalInRound = queue.length;
     U.setText('nScore', 0);
 
-    // Прогресс-бар
     const fill = U.el('nProgressFill');
     if (fill) fill.style.width = '0%';
 
-    // Показать экран
     if (window.App && typeof App.go === 'function') {
       App.go('screenNewTrainer');
     }
@@ -97,97 +77,67 @@
   }
 
   /* ============================================================
-     5. Очереди для каждого режима
+     Очереди
      ============================================================ */
-
-  // --- ТОНЫ ---
   function buildTonesQueue() {
     const tones = DATA.TONES || [];
     if (tones.length < OPTIONS_COUNT) return [];
-
-    // Перемешиваем и берём 10
     const selected = U.shuffle(tones).slice(0, Math.min(QUESTIONS_PER_ROUND, tones.length));
-
-    return selected.map(t => {
-      // Тип вопроса: показать слог (визуально) → выбрать тон
-      //              или проиграть (озвучка) → выбрать тон
-      const audioQuestion = Math.random() < 0.5;
-      return {
-        tone: t,
-        audio: audioQuestion
-      };
-    });
+    return selected.map(t => ({
+      tone: t,
+      audio: Math.random() < 0.5
+    }));
   }
 
-  // --- АУДИРОВАНИЕ ---
   function buildListeningQueue() {
     const list = DATA.AUDIO_WORDS || [];
     if (list.length < OPTIONS_COUNT) return [];
-
     const allWords = DATA.WORDS_RAW;
     const byHanzi = {};
     allWords.forEach(([hz, py, ru]) => { byHanzi[hz] = { hz, py, ru }; });
-
     const selected = U.shuffle(list).slice(0, Math.min(QUESTIONS_PER_ROUND, list.length));
-
     return selected.map(hz => ({
       word: byHanzi[hz] || { hz, py: '', ru: '' }
     }));
   }
 
-  // --- ПОРЯДОК СЛОВ ---
   function buildWordOrderQueue() {
     const sentences = DATA.SENTENCES || [];
     if (sentences.length === 0) return [];
-
     const selected = U.shuffle(sentences).slice(0, Math.min(QUESTIONS_PER_ROUND, sentences.length));
     return selected.map(s => ({
       sentence: s,
-      // перемешанные плитки
       shuffled: U.shuffle(s.words)
     }));
   }
 
-  // --- ПОХОЖИЕ ИЕРОГЛИФЫ ---
   function buildSimilarQueue() {
     const groups = DATA.SIMILAR || [];
     if (groups.length === 0) return [];
-
-    // Каждая группа даёт несколько вопросов: для каждого слова — выбрать правильный вариант
     const questions = [];
     groups.forEach(group => {
-      // Сколько вопросов из этой группы? — 1-2
       const n = Math.min(2, group.items.length);
       const chosen = U.shuffle(group.items).slice(0, n);
       chosen.forEach(item => {
-        questions.push({
-          group,
-          target: item
-        });
+        questions.push({ group, target: item });
       });
     });
-
     return U.shuffle(questions).slice(0, Math.min(QUESTIONS_PER_ROUND, questions.length));
   }
 
   /* ============================================================
-     6. Следующий вопрос
+     Следующий вопрос
      ============================================================ */
   function next() {
-    if (queue.length === 0) {
-      finishRound();
-      return;
-    }
+    if (queue.length === 0) { finishRound(); return; }
 
     current = queue.shift();
     answered++;
     isAnswered = false;
 
-    // Прогресс
     const fill = U.el('nProgressFill');
     if (fill) fill.style.width = Math.round((answered - 1) / totalInRound * 100) + '%';
 
-    // Очистка
     const optionsEl = U.el('nOptions');
     optionsEl.innerHTML = '';
     const fb = U.el('nFeedback');
@@ -195,12 +145,9 @@
     fb.innerHTML = '';
     const nextBtn = U.el('nNextBtn');
     nextBtn.style.display = 'none';
-
-    // Кнопка "Послушать" — показываем только если нужна
     const playBtn = U.el('nPlayBtn');
     playBtn.style.display = 'none';
 
-    // Скрываем "большой дисплей" под каждый режим — управляем через рендер
     switch (mode) {
       case 'tones':      renderToneQuestion();      break;
       case 'listening':  renderListeningQuestion(); break;
@@ -210,7 +157,7 @@
   }
 
   /* ============================================================
-     7. РЕНДЕР — ТОНЫ
+     ТОНЫ
      ============================================================ */
   function renderToneQuestion() {
     const t = current.tone;
@@ -219,23 +166,18 @@
     const playBtn = U.el('nPlayBtn');
 
     if (current.audio) {
-      // Аудио-вопрос: показываем "?" и озвучиваем
       big.textContent = '🔊';
       big.classList.add('audio');
       hint.textContent = 'Послушай и выбери тон';
       playBtn.style.display = 'inline-flex';
-
-      // Проигрываем сразу
       setTimeout(() => U.speak(t.variants[t.correct - 1]), 200);
     } else {
-      // Визуальный: показываем правильный слог с диакритикой
       big.textContent = t.variants[t.correct - 1];
       big.classList.remove('audio');
       hint.textContent = 'Какой это тон?';
       playBtn.style.display = 'inline-flex';
     }
 
-    // 4 варианта: 1-й, 2-й, 3-й, 4-й тон (соответственно t.variants)
     const toneLabels = ['1-й тон ˉ', '2-й тон ˊ', '3-й тон ˇ', '4-й тон ˋ'];
     const optionsEl = U.el('nOptions');
 
@@ -281,15 +223,13 @@
         <span class="answer-reveal">${t.meaning}</span>`;
     }
 
-    // Озвучиваем правильный вариант
     U.speak(correctChar);
-
-    // Если была похвала включена — уже отображено
+    _recordAnswer(correct);
     afterAnswer();
   }
 
   /* ============================================================
-     8. РЕНДЕР — АУДИРОВАНИЕ
+     АУДИРОВАНИЕ
      ============================================================ */
   function renderListeningQuestion() {
     const w = current.word;
@@ -302,10 +242,8 @@
     hint.textContent = 'Послушай и выбери иероглиф';
     playBtn.style.display = 'inline-flex';
 
-    // Автоматически проигрываем через 300 мс
     setTimeout(() => U.speak(w.hz), 300);
 
-    // 4 иероглифа: правильный + 3 случайных
     const allWords = DATA.WORDS_RAW.filter(x => x[0] !== w.hz);
     const wrong = U.shuffle(allWords).slice(0, OPTIONS_COUNT - 1).map(x => x[0]);
     const options = U.shuffle([w.hz, ...wrong]);
@@ -348,20 +286,18 @@
         <span class="answer-reveal">${w.py} · ${w.ru}</span>`;
     }
 
-    // Показать иероглиф крупно после ответа
     const big = U.el('nBig');
     big.classList.remove('audio');
     big.textContent = w.hz;
     big.style.color = '';
 
-    // Озвучить ещё раз для закрепления
     U.speak(w.hz);
-
+    _recordAnswer(correct);
     afterAnswer();
   }
 
   /* ============================================================
-     9. РЕНДЕР — ПОРЯДОК СЛОВ
+     ПОРЯДОК СЛОВ
      ============================================================ */
   function renderWordOrderQuestion() {
     const s = current.sentence;
@@ -375,29 +311,26 @@
 
     const optionsEl = U.el('nOptions');
 
-    // Зона ответа
     const answerZone = document.createElement('div');
     answerZone.className = 'answer-zone';
     answerZone.id = 'answerZone';
     optionsEl.appendChild(answerZone);
 
-    // Плитки
     const tilesZone = document.createElement('div');
     tilesZone.className = 'word-tiles';
     tilesZone.id = 'tilesZone';
     optionsEl.appendChild(tilesZone);
 
-    // Кнопки управления
     const controls = document.createElement('div');
     controls.style.marginTop = '16px';
+    controls.id = 'wordOrderControls';
     controls.innerHTML = `
       <button class="btn btn-primary" onclick="NewModes._checkWordOrder()">✓ Проверить</button>
       <button class="btn btn-secondary" onclick="NewModes._resetWordOrder()">↺ Сброс</button>
     `;
     optionsEl.appendChild(controls);
 
-    // Создаём плитки
-    current.shuffled.forEach((word, i) => {
+    current.shuffled.forEach((word) => {
       const t = document.createElement('div');
       t.className = 'word-tile';
       t.dataset.word = word;
@@ -414,14 +347,12 @@
     if (!answerZone || !tilesZone) return;
 
     if (tile.parentElement === tilesZone) {
-      // Из "доступных" в "ответ"
       tile.classList.add('used');
       const clone = tile.cloneNode(true);
       clone.classList.remove('used');
       clone.onclick = () => returnTile(clone);
       answerZone.appendChild(clone);
     }
-
     U.clickSound('click');
   }
 
@@ -429,7 +360,6 @@
     if (isAnswered) return;
     const tilesZone = U.el('tilesZone');
     const word = tile.dataset.word;
-    // Возвращаем оригинал
     const originals = tilesZone.querySelectorAll('.word-tile');
     originals.forEach(o => {
       if (o.dataset.word === word && o.classList.contains('used')) {
@@ -450,7 +380,6 @@
       .map(t => t.dataset.word);
     const correctWords = current.sentence.words;
 
-    // Строгое сравнение порядка
     const ok = userWords.length === correctWords.length &&
                userWords.every((w, i) => w === correctWords[i]);
 
@@ -476,13 +405,12 @@
         <span class="answer-reveal">${current.sentence.ru}</span>`;
     }
 
-    // Озвучиваем правильное предложение
     U.speak(correctStr);
 
-    // Скрываем кнопки проверить/сброс, показываем «Далее»
-    const controls = document.querySelector('#nOptions > div:last-child');
+    const controls = U.el('wordOrderControls');
     if (controls) controls.style.display = 'none';
 
+    _recordAnswer(ok);
     afterAnswer();
   }
 
@@ -497,7 +425,7 @@
   }
 
   /* ============================================================
-     10. РЕНДЕР — ПОХОЖИЕ ИЕРОГЛИФЫ
+     ПОХОЖИЕ ИЕРОГЛИФЫ
      ============================================================ */
   function renderSimilarQuestion() {
     const g = current.group;
@@ -506,20 +434,17 @@
     const hint = U.el('nHint');
     const playBtn = U.el('nPlayBtn');
 
-    // Показываем перевод + пиньинь, надо угадать иероглиф
     big.textContent = target.ru;
     big.style.fontSize = '40px';
     big.classList.remove('audio');
     hint.textContent = `Выбери иероглиф · ${target.py}`;
     playBtn.style.display = 'inline-flex';
 
-    // 4 варианта: правильный + 3 из этой же группы (если хватает), иначе — из других
     const allItems = g.items.map(x => x.hz);
     const wrongFromGroup = allItems.filter(hz => hz !== target.hz);
 
     let wrongs = wrongFromGroup;
     if (wrongs.length < OPTIONS_COUNT - 1) {
-      // добиваем из других групп
       const others = [];
       DATA.SIMILAR.forEach(otherGroup => {
         if (otherGroup === g) return;
@@ -572,7 +497,6 @@
         <span class="answer-reveal">${target.py} — ${target.ru}</span>`;
     }
 
-    // Дополнительно показываем подсказку группы
     if (g.tip) {
       const tip = document.createElement('div');
       tip.style.cssText = 'margin-top:10px; padding:10px; background:rgba(212,162,78,0.1); border-radius:8px; font-size:13px; color:var(--gray);';
@@ -580,44 +504,36 @@
       U.el('nFeedback').appendChild(tip);
     }
 
-    // Озвучиваем правильный иероглиф
     U.speak(target.hz);
 
-    // Показываем крупно
     const big = U.el('nBig');
     big.textContent = target.hz;
     big.style.fontSize = '96px';
 
+    _recordAnswer(correct);
     afterAnswer();
   }
 
   /* ============================================================
-     11. Общая обработка после ответа
+     Общая обработка после ответа
      ============================================================ */
   function afterAnswer() {
-    // Записываем в статистику
-    const lastCorrect = isAnswered; // запомним до отложенного вызова
-    if (window.Stats && typeof Stats.recordAnswer === 'function') {
-      // Мы не знаем, был ли ответ правильным из этой функции — передаём
-      // через closure. Но после `checkXXXAnswer` мы уже внутри `afterAnswer` —
-      // можем ориентироваться на текущий счёт:
-      // Проще — не вызывать здесь, а вызывать прямо в каждом check.
-    }
-
-    // Кнопка «Далее»
     const nextBtn = U.el('nNextBtn');
     nextBtn.style.display = 'flex';
   }
 
-  // Обёртка — вызывается после проверки конкретного режима
+  // Запись в статистику + кормление панды
   function _recordAnswer(ok) {
     if (window.Stats && typeof Stats.recordAnswer === 'function') {
       Stats.recordAnswer(ok);
     }
+    if (window.Pet && typeof Pet.feed === 'function') {
+      Pet.feed(ok);
+    }
   }
 
   /* ============================================================
-     12. Кнопка «Послушать»
+     Кнопка «Послушать»
      ============================================================ */
   function play() {
     if (!current) return;
@@ -633,7 +549,7 @@
   }
 
   /* ============================================================
-     13. Финальный экран
+     Финальный экран
      ============================================================ */
   function finishRound() {
     const fill = U.el('nProgressFill');
@@ -659,7 +575,6 @@
       </div>
     `;
 
-    // Верх — празднично
     const big = U.el('nBig');
     big.textContent = '🎉';
     big.classList.remove('audio');
@@ -686,7 +601,7 @@
   }
 
   /* ============================================================
-     14. Инициализация
+     Инициализация
      ============================================================ */
   function init() {
     console.log('[newmodes.js] Инициализировано. Режимов доступно: 4',
@@ -694,7 +609,7 @@
   }
 
   /* ============================================================
-     15. Экспорт
+     Экспорт
      ============================================================ */
   window.NewModes = {
     init,
@@ -704,7 +619,6 @@
     play,
     backToMenu,
     backToHome,
-    // для inline-обработчиков
     _checkWordOrder: checkWordOrder,
     _resetWordOrder: resetWordOrder
   };

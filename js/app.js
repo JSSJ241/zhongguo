@@ -268,6 +268,8 @@
       if (window.NewModes) NewModes.init();
       if (window.Pet)    Pet.init();
       if (window.Dragon) Dragon.init();
+      if (window.Arcade) Arcade.init();
+      if (window.Study)  Study.init();
     } catch (e) {
       console.error('[app.js] Ошибка при инициализации модулей:', e);
     }

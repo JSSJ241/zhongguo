@@ -89,7 +89,7 @@
     U.setText('radicalScore', `${mastered} / ${radicals.length}`);
   }
 
-  /* ============================================================
+    /* ============================================================
      5. КАРТОЧКА ОДНОГО КЛЮЧА
      ============================================================ */
   function openDetail(idx) {
@@ -98,7 +98,6 @@
 
     const st = getStat(r.g);
 
-    // Заполняем детали
     U.setText('rGlyph', r.g);
     U.setText('rName', r.n);
     U.setText('rMean', r.m);
@@ -106,26 +105,26 @@
       `<span class="ex">${U.escapeHtml(e)}</span>`
     ).join(''));
 
-    // Оформление глифа
     const glyphEl = U.el('rGlyph');
     if (glyphEl) glyphEl.style.fontSize = '140px';
 
-    // Вопрос и опции — заменяем на кнопки действия
     U.setText('rQuestion', 'Изучи ключ');
     const optionsEl = U.el('rOptions');
     optionsEl.innerHTML = `
       <button class="btn btn-primary" onclick="Radicals.startTraining([${idx}])">
         ▶ Тренировать этот
       </button>
+      <button class="btn btn-secondary" onclick="Radicals.showWords('${U.escapeHtml(r.g)}')">
+        📚 Слова с этим ключом
+      </button>
       <button class="btn btn-gold" onclick="Radicals.markMastered('${U.escapeHtml(r.g)}')">
         ✓ Я его знаю
       </button>
-      <button class="btn btn-secondary" onclick="Radicals.backToList()">
+      <button class="btn btn-ghost" onclick="Radicals.backToList()">
         ← К списку
       </button>
     `;
 
-    // Сброс фидбека и прогресс-бара
     const fb = U.el('rFeedback');
     if (fb) { fb.className = 'feedback'; fb.innerHTML = ''; }
 
@@ -137,9 +136,21 @@
 
     U.setText('rScore', 0);
 
-    // Показываем экран
     if (window.App && typeof App.go === 'function') {
       App.go('screenRadicalTrainer');
+    }
+  }
+
+  /* ============================================================
+     5.1 СЛОВА С ЭТИМ КЛЮЧОМ
+     ============================================================ */
+  function showWords(glyph) {
+    if (window.Study && typeof Study.showRadicalWords === 'function') {
+      const modal = document.getElementById('radicalWordsModal');
+      if (modal) {
+        modal.style.display = 'flex';
+        Study.showRadicalWords(glyph);
+      }
     }
   }
 
@@ -434,6 +445,7 @@
     nextQuestion,
     backToList,
     markMastered,
+    showWords, 
     // для отладки
     _stats: () => stats
   };

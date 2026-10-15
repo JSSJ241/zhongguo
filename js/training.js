@@ -387,6 +387,9 @@
       const praise = (window.Settings && Settings.get('praise')) ? U.praise() : '✓ Верно!';
       fb.innerHTML = `${praise}
         <span class="answer-reveal">${w.hanzi} · ${w.pinyin} · ${w.ru}</span>`;
+      if (ok && window.Study && typeof Study.showSentence === 'function') {
+         Study.showSentence(w.hanzi, fb);
+      }
 
       // Озвучка в режиме hanzi — после правильного ответа
       if (current.mode === 'hanzi' && speakEnabled) {
